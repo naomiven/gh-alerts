@@ -50,17 +50,15 @@ def publish_unread_notifications():
     for notif in notifications:
         if notif.subject.type == 'Issue':
             issue = notif.get_issue()
-            url = notif.get_issue().html_url
+            url = issue.html_url
             user = issue.user.login
         elif notif.subject.type == 'PullRequest':
             pr = notif.get_pull_request()
-            url = notif.get_pull_request().html_url
+            url = pr.html_url
             user = pr.user.login
         else:
-            user = '<Unknown User>'
-            url = '<Unknown URL>'
-
-        app.logger.info(notif.get_issue().html_url)
+            user = '<unknown-user>'
+            url = '<unknown-url>'
 
         messages.append(
             {
@@ -79,8 +77,50 @@ def publish_unread_notifications():
     message = format_email_message(messages)
 
     publisher.publish_to_notif_topic(
-        f'You have {len(messages)} unread Github notifications', message
+        f'You have {len(messages)} unread Github notification{"s" if len(messages) > 1 else ""}', \
+        message
     )
+
+    return {
+        'message': 'success'
+    }
+
+
+@app.route('/pull-requests', methods=['GET'])
+def publish_unread_prs():
+    current_user = g.get_user()
+    notifications = current_user.get_notifications()
+    messages = []
+
+    for notif in notifications:
+        if notif.subject.type != 'PullRequest':
+            continue
+
+        pr = notif.get_pull_request()
+        url = pr.html_url
+        reviewers = pr.requested_reviewers
+        user = pr.user.login
+
+        if current_user.login not in [reviewer.login for reviewer in reviewers]:
+            continue
+
+        messages.append(
+            {
+                'title': notif.subject.title,
+                'url': url,
+                'user': user,
+                'type': notif.subject.type
+            }
+        )
+
+    app.logger.info(f'messages: {messages}')
+
+    if len(messages) == 0:
+        return {
+            'message': 'No PRs to review!'
+        }
+
+    # TODO: publish
 
     return {
         'message': 'success'
