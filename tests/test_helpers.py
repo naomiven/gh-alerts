@@ -38,7 +38,7 @@ def test_format_sms_message():
 
     expected = 'GH Alerts > You have 1 unread Github notification.\n\n' + \
         '"Notification Title" (PullRequest) by @naomiven\n\n' + \
-        'For more details visit https://github.com/notifications'
+        'For more details, visit https://github.com/notifications'
 
     formatted = format_sms_message(messages)
 
