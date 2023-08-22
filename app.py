@@ -42,6 +42,14 @@ class SNSSubscriber:
             TopicArn=GH_NOTIF_ALERTS_SNS_TOPIC_ARN, Protocol=protocol, Endpoint=endpoint
         )
 
+    def get_subscribers(self):
+        response = self.client.list_subscriptions_by_topic(TopicArn=GH_NOTIF_ALERTS_SNS_TOPIC_ARN)
+
+        subscriptions = response['Subscriptions']
+        subscribers = [sub['Endpoint'] for sub in subscriptions]
+
+        return subscribers
+
 
 publisher = SNSPublisher()
 subscriber = SNSSubscriber()
@@ -139,7 +147,9 @@ def subscribe():
     if not email and not phone_number:
         return {'message': 'Email or phone number required for subscription'}, 400
 
-    if email:
+    subscribers = subscriber.get_subscribers()
+
+    if email and email not in subscribers:
         response = subscriber.subscribe('email', email)
         status_code = response['ResponseMetadata']['HTTPStatusCode']
 
@@ -147,7 +157,7 @@ def subscribe():
             return {'message': 'Cannot create email subscription'}, status_code
 
 
-    if phone_number:
+    if phone_number and phone_number not in subscribers:
         response = subscriber.subscribe('sms', phone_number)
         status_code = response['ResponseMetadata']['HTTPStatusCode']
 
