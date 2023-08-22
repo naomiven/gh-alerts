@@ -1,3 +1,7 @@
+"""
+Flask Backend App for Github Alerts
+"""
+
 import logging
 import os
 import boto3
@@ -25,14 +29,11 @@ class SNSPublisher:
     email_topic = sns.Topic(GH_EMAIL_ALERTS_SNS_TOPIC_ARN)
     sms_topic = sns.Topic(GH_SMS_ALERTS_SNS_TOPIC_ARN)
 
-
     def publish(self, topic, subject, message):
         topic.publish(Subject=subject, Message=message)
 
-
     def publish_to_email_topic(self, subject, message):
         self.publish(self.email_topic, subject, message)
-
 
     def publish_to_sms_topic(self, subject, message):
         self.publish(self.sms_topic, subject, message)
@@ -109,49 +110,12 @@ def publish_unread_notifications():
 
     message = format_email_message(messages)
     publisher.publish_to_email_topic(
-        f'You have {len(messages)} unread Github notification{"s" if len(messages) > 1 else ""}', \
+        f'You have {len(messages)} unread Github notification{"s" if len(messages) > 1 else ""}',
         message
     )
 
     message = format_sms_message(messages)
     publisher.publish_to_sms_topic('GH Alerts', message)
-
-    return {'message': 'success'}
-
-
-@app.route('/pull-requests', methods=['GET'])
-def publish_unread_prs():
-    current_user = g.get_user()
-    notifications = current_user.get_notifications()
-    messages = []
-
-    for notif in notifications:
-        if notif.subject.type != 'PullRequest':
-            continue
-
-        pr = notif.get_pull_request()
-        url = pr.html_url
-        reviewers = pr.requested_reviewers
-        user = pr.user.login
-
-        if current_user.login not in [reviewer.login for reviewer in reviewers]:
-            continue
-
-        messages.append(
-            {
-                'title': notif.subject.title,
-                'url': url,
-                'user': user,
-                'type': notif.subject.type
-            }
-        )
-
-    app.logger.info(f'messages: {messages}')
-
-    if len(messages) == 0:
-        return {'message': 'No PRs to review!'}
-
-    # TODO: publish
 
     return {'message': 'success'}
 
@@ -167,19 +131,11 @@ def subscribe():
     email_subscribers = subscriber.get_email_subscribers()
 
     if email and email not in email_subscribers:
-        response = subscriber.subscribe_email(email)
-        status_code = response['ResponseMetadata']['HTTPStatusCode']
-
-        if status_code != 200:
-            return {'message': 'Cannot create email subscription'}, status_code
+        subscriber.subscribe_email(email)
 
     sms_subscribers = subscriber.get_sms_subscribers()
 
     if phone_number and phone_number not in sms_subscribers:
-        response = subscriber.subscribe_sms(phone_number)
-        status_code = response['ResponseMetadata']['HTTPStatusCode']
-
-        if status_code != 200:
-            return {'message': 'Cannot create SMS subscription'}, status_code
+        subscriber.subscribe_sms(phone_number)
 
     return {'message': 'success'}

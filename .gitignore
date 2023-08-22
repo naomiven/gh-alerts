@@ -1,4 +1,7 @@
-# python-specific
+# vs
+.vscode
+
+# python
 __pycache__
 .env
 venv
