@@ -7,8 +7,8 @@ from helpers.formatters import format_email_message
 
 
 AWS_REGION = os.getenv('AWS_REGION')
-GH_NOTIF_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_NOTIF_ALERTS_SNS_TOPIC_ARN')
-GH_PR_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_PR_ALERTS_SNS_TOPIC_ARN')
+GH_EMAIL_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_EMAIL_ALERTS_SNS_TOPIC_ARN')
+GH_SMS_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_SMS_ALERTS_SNS_TOPIC_ARN')
 GH_TOKEN = os.getenv('GH_TOKEN')
 
 logging.basicConfig(level=logging.DEBUG)
@@ -22,33 +22,44 @@ app.logger.setLevel(logging.INFO)
 
 class SNSPublisher:
     sns = boto3.resource('sns', region_name=AWS_REGION)
-    notif_topic = sns.Topic(GH_NOTIF_ALERTS_SNS_TOPIC_ARN)
-    pr_topic = sns.Topic(GH_PR_ALERTS_SNS_TOPIC_ARN)
+    email_topic = sns.Topic(GH_EMAIL_ALERTS_SNS_TOPIC_ARN)
+    sms_topic = sns.Topic(GH_SMS_ALERTS_SNS_TOPIC_ARN)
 
 
     def publish(self, topic, subject, message):
         topic.publish(Subject=subject, Message=message)
 
 
-    def publish_to_notif_topic(self, subject, message):
-        self.publish(self.notif_topic, subject, message)
+    def publish_to_email_topic(self, subject, message):
+        self.publish(self.email_topic, subject, message)
 
 
 class SNSSubscriber:
     client = boto3.client('sns', region_name=AWS_REGION)
 
-    def subscribe(self, protocol, endpoint):
+    def subscribe_email(self, email):
         return self.client.subscribe(
-            TopicArn=GH_NOTIF_ALERTS_SNS_TOPIC_ARN, Protocol=protocol, Endpoint=endpoint
+            TopicArn=GH_EMAIL_ALERTS_SNS_TOPIC_ARN, Protocol='email', Endpoint=email
         )
 
-    def get_subscribers(self):
-        response = self.client.list_subscriptions_by_topic(TopicArn=GH_NOTIF_ALERTS_SNS_TOPIC_ARN)
+    def subscribe_sms(self, phone_number):
+        return self.client.subscribe(
+            TopicArn=GH_SMS_ALERTS_SNS_TOPIC_ARN, Protocol='sms', Endpoint=phone_number
+        )
+
+    def get_subscribers(self, topic_arn):
+        response = self.client.list_subscriptions_by_topic(TopicArn=topic_arn)
 
         subscriptions = response['Subscriptions']
         subscribers = [sub['Endpoint'] for sub in subscriptions]
 
         return subscribers
+
+    def get_email_subscribers(self):
+        return self.get_subscribers(GH_EMAIL_ALERTS_SNS_TOPIC_ARN)
+
+    def get_sms_subscribers(self):
+        return self.get_subscribers(GH_SMS_ALERTS_SNS_TOPIC_ARN)
 
 
 publisher = SNSPublisher()
@@ -94,7 +105,7 @@ def publish_unread_notifications():
 
     message = format_email_message(messages)
 
-    publisher.publish_to_notif_topic(
+    publisher.publish_to_email_topic(
         f'You have {len(messages)} unread Github notification{"s" if len(messages) > 1 else ""}', \
         message
     )
@@ -147,18 +158,19 @@ def subscribe():
     if not email and not phone_number:
         return {'message': 'Email or phone number required for subscription'}, 400
 
-    subscribers = subscriber.get_subscribers()
+    email_subscribers = subscriber.get_email_subscribers()
 
-    if email and email not in subscribers:
-        response = subscriber.subscribe('email', email)
+    if email and email not in email_subscribers:
+        response = subscriber.subscribe_email(email)
         status_code = response['ResponseMetadata']['HTTPStatusCode']
 
         if status_code != 200:
             return {'message': 'Cannot create email subscription'}, status_code
 
+    sms_subscribers = subscriber.get_sms_subscribers()
 
-    if phone_number and phone_number not in subscribers:
-        response = subscriber.subscribe('sms', phone_number)
+    if phone_number and phone_number not in sms_subscribers:
+        response = subscriber.subscribe_sms(phone_number)
         status_code = response['ResponseMetadata']['HTTPStatusCode']
 
         if status_code != 200:
