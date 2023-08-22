@@ -3,7 +3,7 @@ import os
 import boto3
 from flask import Flask, request
 from github import Auth, Github
-from helpers.formatters import format_email_message
+from helpers.formatters import format_email_message, format_sms_message
 
 
 AWS_REGION = os.getenv('AWS_REGION')
@@ -32,6 +32,10 @@ class SNSPublisher:
 
     def publish_to_email_topic(self, subject, message):
         self.publish(self.email_topic, subject, message)
+
+
+    def publish_to_sms_topic(self, subject, message):
+        self.publish(self.sms_topic, subject, message)
 
 
 class SNSSubscriber:
@@ -104,11 +108,13 @@ def publish_unread_notifications():
         }
 
     message = format_email_message(messages)
-
     publisher.publish_to_email_topic(
         f'You have {len(messages)} unread Github notification{"s" if len(messages) > 1 else ""}', \
         message
     )
+
+    message = format_sms_message(messages)
+    publisher.publish_to_sms_topic('GH Alerts', message)
 
     return {'message': 'success'}
 
