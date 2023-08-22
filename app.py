@@ -1,7 +1,7 @@
 import logging
 import os
 import boto3
-from flask import Flask
+from flask import Flask, request
 from github import Auth, Github
 from helpers.formatters import format_email_message
 
@@ -34,7 +34,17 @@ class SNSPublisher:
         self.publish(self.notif_topic, subject, message)
 
 
+class SNSSubscriber:
+    client = boto3.client('sns', region_name=AWS_REGION)
+
+    def subscribe(self, protocol, endpoint):
+        return self.client.subscribe(
+            TopicArn=GH_NOTIF_ALERTS_SNS_TOPIC_ARN, Protocol=protocol, Endpoint=endpoint
+        )
+
+
 publisher = SNSPublisher()
+subscriber = SNSSubscriber()
 
 
 @app.route('/')
@@ -81,9 +91,7 @@ def publish_unread_notifications():
         message
     )
 
-    return {
-        'message': 'success'
-    }
+    return {'message': 'success'}
 
 
 @app.route('/pull-requests', methods=['GET'])
@@ -116,12 +124,34 @@ def publish_unread_prs():
     app.logger.info(f'messages: {messages}')
 
     if len(messages) == 0:
-        return {
-            'message': 'No PRs to review!'
-        }
+        return {'message': 'No PRs to review!'}
 
     # TODO: publish
 
-    return {
-        'message': 'success'
-    }
+    return {'message': 'success'}
+
+
+@app.route('/subscriptions', methods=['POST'])
+def subscribe():
+    email = request.json.get('email')
+    phone_number = request.json.get('phone_number')
+
+    if not email and not phone_number:
+        return {'message': 'Email or phone number required for subscription'}, 400
+
+    if email:
+        response = subscriber.subscribe('email', email)
+        status_code = response['ResponseMetadata']['HTTPStatusCode']
+
+        if status_code != 200:
+            return {'message': 'Cannot create email subscription'}, status_code
+
+
+    if phone_number:
+        response = subscriber.subscribe('sms', phone_number)
+        status_code = response['ResponseMetadata']['HTTPStatusCode']
+
+        if status_code != 200:
+            return {'message': 'Cannot create SMS subscription'}, status_code
+
+    return {'message': 'success'}
