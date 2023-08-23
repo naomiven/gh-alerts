@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sns:ListSubscriptionsByTopic",
+                "sns:Publish",
+                "sns:Subscribe",
+                "sns:Unsubscribe"
+            ],
+            "Resource": [
+                "${GH_EMAIL_ALERTS_SNS_TOPIC_ARN}",
+                "${GH_SMS_ALERTS_SNS_TOPIC_ARN}"
+            ]
+        }
+    ]
+}

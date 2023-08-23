@@ -10,3 +10,6 @@ venv
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# AWS Scripts
+scripts/policy.json
