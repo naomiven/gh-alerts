@@ -42,6 +42,23 @@ class SNSPublisher:
 class SNSSubscriber:
     client = boto3.client('sns', region_name=AWS_REGION)
 
+    def get_subscriptions(self, topic_arn):
+        response = self.client.list_subscriptions_by_topic(TopicArn=topic_arn)
+
+        return response['Subscriptions']
+
+    def get_subscribers(self, topic_arn):
+        subscriptions = self.get_subscriptions(topic_arn)
+        subscribers = [sub['Endpoint'] for sub in subscriptions]
+
+        return subscribers
+
+    def get_email_subscribers(self):
+        return self.get_subscribers(GH_EMAIL_ALERTS_SNS_TOPIC_ARN)
+
+    def get_sms_subscribers(self):
+        return self.get_subscribers(GH_SMS_ALERTS_SNS_TOPIC_ARN)
+
     def subscribe_email(self, email):
         return self.client.subscribe(
             TopicArn=GH_EMAIL_ALERTS_SNS_TOPIC_ARN, Protocol='email', Endpoint=email
@@ -52,19 +69,31 @@ class SNSSubscriber:
             TopicArn=GH_SMS_ALERTS_SNS_TOPIC_ARN, Protocol='sms', Endpoint=phone_number
         )
 
-    def get_subscribers(self, topic_arn):
-        response = self.client.list_subscriptions_by_topic(TopicArn=topic_arn)
+    def unsubscribe_email(self, email):
+        subscriptions = self.get_subscriptions(GH_EMAIL_ALERTS_SNS_TOPIC_ARN)
 
-        subscriptions = response['Subscriptions']
-        subscribers = [sub['Endpoint'] for sub in subscriptions]
+        # Get SubscriptionArn
+        sub_arn = next(
+            (sub['SubscriptionArn'] for sub in subscriptions if sub['Endpoint'] == email), None
+        )
 
-        return subscribers
+        if sub_arn:
+            return self.client.unsubscribe(SubscriptionArn=sub_arn)
 
-    def get_email_subscribers(self):
-        return self.get_subscribers(GH_EMAIL_ALERTS_SNS_TOPIC_ARN)
+        return False
 
-    def get_sms_subscribers(self):
-        return self.get_subscribers(GH_SMS_ALERTS_SNS_TOPIC_ARN)
+    def unsubscribe_sms(self, sms):
+        subscriptions = self.get_subscriptions(GH_SMS_ALERTS_SNS_TOPIC_ARN)
+
+        # Get SubscriptionArn
+        sub_arn = next(
+            (sub['SubscriptionArn'] for sub in subscriptions if sms in sub['Endpoint']), None
+        )
+
+        if sub_arn:
+            return self.client.unsubscribe(SubscriptionArn=sub_arn)
+
+        return False
 
 
 publisher = SNSPublisher()
@@ -137,5 +166,22 @@ def subscribe():
 
     if phone_number and phone_number not in sms_subscribers:
         subscriber.subscribe_sms(phone_number)
+
+    return {'message': 'success'}
+
+
+@app.route('/subscriptions', methods=['DELETE'])
+def unsubscribe():
+    email = request.json.get('email')
+    phone_number = request.json.get('phone_number')
+
+    if not email and not phone_number:
+        return {'message': 'Email or phone number required for removing subscription'}, 400
+
+    if email:
+        subscriber.unsubscribe_email(email)
+
+    if phone_number:
+        subscriber.unsubscribe_sms(phone_number)
 
     return {'message': 'success'}
