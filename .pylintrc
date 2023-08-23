@@ -1,4 +1,6 @@
 [MESSAGES CONTROL]
 disable=
     invalid-name,
-    logging-fstring-interpolation
+    logging-fstring-interpolation,
+    missing-class-docstring,
+    missing-function-docstring
