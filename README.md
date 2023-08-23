@@ -1,5 +1,7 @@
 # Github Alerts
 
+_This App is a work in progress!_ Stay tuned :sparkles:
+
 ## Backend
 
 Install dependencies
@@ -36,3 +38,9 @@ Ensure that WSGI Path is set to `app:app`
 ```sh
 eb deploy
 ```
+
+## AWS Scripts
+
+`set_envs.sh`: Sets the environment variables for the backend in Elastic Beanstalk.
+
+`update_policy.sh`: Updates the IAM policy of the EC2 instance profile of the backend. This policy contains permissions for accessing specific AWS resources.
