@@ -3,7 +3,6 @@ Github alerts publisher lambda function.
 
 Calls the Github Alerts API URL to publish notifications to SNS topics.
 """
-import json
 import logging
 import os
 import requests
@@ -16,13 +15,11 @@ _logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
-    _logger.info('Hello!')
+    response = requests.post(f'{GH_ALERTS_API_URL}/notifications', timeout=3)
 
-    response = requests.get(GH_ALERTS_API_URL, timeout=3)
-
-    _logger.info(f'response: {response.content}')
+    _logger.info(f'response: {response.json()}, status_code: {response.status_code}')
 
     return {
-        'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
+        'status_code': 200,
+        'body': 'success'
     }
