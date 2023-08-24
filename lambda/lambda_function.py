@@ -15,6 +15,8 @@ _logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
+    _logger.info(f'event: {event}')
+
     response = requests.post(f'{GH_ALERTS_API_URL}/notifications', timeout=3)
 
     _logger.info(f'response: {response.json()}, status_code: {response.status_code}')

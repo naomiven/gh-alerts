@@ -2,6 +2,12 @@
 
 _This App is a work in progress!_ Stay tuned :sparkles:
 
+Technology used:
+
+**Backend**: Python, Flask, AWS (SMS, SNS, EC2, Lambda, EventBridge)
+
+**Frontend**: _TBD_
+
 ## Backend
 
 Install dependencies
@@ -44,3 +50,25 @@ eb deploy
 `set_envs.sh`: Sets the environment variables for the backend in Elastic Beanstalk.
 
 `update_policy.sh`: Updates the IAM policy of the EC2 instance profile of the backend. This policy contains permissions for accessing specific AWS resources.
+
+## Lambda Scripts
+
+Deploy lambda function:
+
+```sh
+cd lambda/scripts
+./deploy.sh
+```
+
+This script will execute the steps below in order:
+
+1. `update_config.sh`: Updates the lambda function's environment variables
+2. `deploy_lambda.sh`: Installs dependencies and deploys the lambda function
+
+### EventBridge Scheduled Events
+
+Trigger the lambda at a scheduled rate using EventBridge Scheduler. To trigger every hour from 9:00 - 17:00, Monday to Friday, use cron expression:
+
+```sh
+0 9-17 ? * MON-FRI *
+```
