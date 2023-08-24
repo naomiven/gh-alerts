@@ -5,7 +5,7 @@ CONFIG_FILE=config.json
 CONFIG_FILE_TEMPLATE=config.json.template
 
 # Load environment variables
-export $(cat ../../.env | xargs)
+export $(cat ../.env | xargs)
 
 # Populate envs into config file
 envsubst < $CONFIG_FILE_TEMPLATE > $CONFIG_FILE
