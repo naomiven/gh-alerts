@@ -74,7 +74,9 @@ class SNSSubscriber:
 
         # Get SubscriptionArn
         sub_arn = next(
-            (sub['SubscriptionArn'] for sub in subscriptions if sub['Endpoint'] == email), None
+            (
+                sub['SubscriptionArn'] for sub in subscriptions if sub['Endpoint'] == email
+            ), None
         )
 
         if sub_arn:
@@ -87,7 +89,9 @@ class SNSSubscriber:
 
         # Get SubscriptionArn
         sub_arn = next(
-            (sub['SubscriptionArn'] for sub in subscriptions if sms in sub['Endpoint']), None
+            (
+                sub['SubscriptionArn'] for sub in subscriptions if sms in sub['Endpoint']
+            ), None
         )
 
         if sub_arn:
@@ -105,7 +109,7 @@ def root():
     return 'Welcome to Naomi\'s app :D'
 
 
-@app.route('/notifications', methods=['GET'])
+@app.route('/notifications', methods=['POST'])
 def publish_unread_notifications():
     notifications = g.get_user().get_notifications()
     messages = []
