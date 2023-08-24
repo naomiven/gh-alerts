@@ -5,7 +5,6 @@ POLICY_NAME=gh-alerts-policy
 POLICY_FILE=policy.json
 POLICY_FILE_TEMPLATE=policy.json.template
 
-
 # Load environment variables
 export $(cat ../.env | xargs)
 

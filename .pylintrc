@@ -3,4 +3,5 @@ disable=
     invalid-name,
     logging-fstring-interpolation,
     missing-class-docstring,
-    missing-function-docstring
+    missing-function-docstring,
+    unused-argument
