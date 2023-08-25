@@ -67,18 +67,22 @@ cd <root-dir>/lambda/scripts
 ./deploy.sh
 ```
 
-## AWS Scripts
+### Config
+
+To update the configuration of the backend:
 
 `set_envs.sh`: Sets the environment variables for the backend in Elastic Beanstalk.
 
 `update_policy.sh`: Updates the IAM policy (attached to IAM role) of the backend's EC2 instance profile. This policy contains permissions for accessing specific AWS resources.
 
-## Lambda Scripts
+## Lambda Function
 
 The `deploy.sh` script executes the steps below in order:
 
 1. `update_config.sh`: Updates the lambda function's environment variables
 2. `deploy_lambda.sh`: Installs dependencies and deploys the lambda function
+
+Ensure the timeout of the lambda is greater than the timeout of the post request to the MS Teams webhook.
 
 ### EventBridge Scheduled Events
 
