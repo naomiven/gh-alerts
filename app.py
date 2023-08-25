@@ -153,7 +153,7 @@ def publish_unread_notifications():
     publisher.publish_to_sms_topic('GH Alerts', message)
 
     message = format_ms_teams_message(messages)
-    requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=3)
+    requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=5)
 
     return {'message': 'success'}
 
