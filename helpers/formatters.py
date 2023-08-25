@@ -33,7 +33,7 @@ def format_ms_teams_message(messages: list):
     title = f'{num_messages if num_messages <= 10 else "10+"} unread Github ' + \
             f'notification{"s" if num_messages > 1 else ""}'
     notifications = [
-        f'"{message["title"]}" ({message["type"]}) by @{message["user"]}' \
+        f'[{message["title"]}]({message["url"]}) ({message["type"]}) by @{message["user"]}' \
         for message in messages
     ][:5]
 
