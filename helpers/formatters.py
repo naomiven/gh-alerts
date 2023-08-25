@@ -36,6 +36,8 @@ def format_ms_teams_message(messages: list):
         f'[{message["title"]}]({message["url"]}) ({message["type"]}) by @{message["user"]}' \
         for message in messages
     ][:5]
+    if num_messages > 5:
+        notifications.append('Etc...')
 
     return {
         '@type': 'MessageCard',
@@ -44,7 +46,7 @@ def format_ms_teams_message(messages: list):
         'title': title,
         'sections': [
             {
-                'facts': [{'name': '-', 'value': notif} for notif in notifications]
+                'facts': [{'name': '', 'value': notif} for notif in notifications]
             }
         ],
         'potentialAction': [
