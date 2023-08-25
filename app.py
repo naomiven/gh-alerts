@@ -32,13 +32,13 @@ class SNSPublisher:
     sms_topic = sns.Topic(GH_SMS_ALERTS_SNS_TOPIC_ARN)
 
     def publish(self, topic, subject, message):
-        topic.publish(Subject=subject, Message=message)
+        return topic.publish(Subject=subject, Message=message)
 
     def publish_to_email_topic(self, subject, message):
-        self.publish(self.email_topic, subject, message)
+        return self.publish(self.email_topic, subject, message)
 
     def publish_to_sms_topic(self, subject, message):
-        self.publish(self.sms_topic, subject, message)
+        return self.publish(self.sms_topic, subject, message)
 
 
 class SNSSubscriber:
@@ -144,16 +144,19 @@ def publish_unread_notifications():
         }
 
     message = format_email_message(messages)
-    publisher.publish_to_email_topic(
+    response = publisher.publish_to_email_topic(
         f'You have {len(messages)} unread Github notification{"s" if len(messages) > 1 else ""}',
         message
     )
+    app.logger.debug(f'Publish to email topic response: {response}')
 
     message = format_sms_message(messages)
-    publisher.publish_to_sms_topic('GH Alerts', message)
+    response = publisher.publish_to_sms_topic('GH Alerts', message)
+    app.logger.debug(f'Publish to SMS topic response: {response}')
 
     message = format_ms_teams_message(messages)
-    requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=5)
+    response = requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=5)
+    app.logger.debug(f'Publish to MS Teams Webhook response: {response.content}')
 
     return {'message': 'success'}
 
