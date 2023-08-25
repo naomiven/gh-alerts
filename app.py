@@ -7,13 +7,15 @@ import os
 import boto3
 from flask import Flask, request
 from github import Auth, Github
-from helpers.formatters import format_email_message, format_sms_message
+import requests
+from helpers.formatters import format_email_message, format_ms_teams_message, format_sms_message
 
 
 AWS_REGION = os.getenv('AWS_REGION')
 GH_EMAIL_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_EMAIL_ALERTS_SNS_TOPIC_ARN')
 GH_SMS_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_SMS_ALERTS_SNS_TOPIC_ARN')
 GH_TOKEN = os.getenv('GH_TOKEN')
+MS_TEAMS_INCOMING_WEBHOOK_URL = os.getenv('MS_TEAMS_INCOMING_WEBHOOK_URL')
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -149,6 +151,9 @@ def publish_unread_notifications():
 
     message = format_sms_message(messages)
     publisher.publish_to_sms_topic('GH Alerts', message)
+
+    message = format_ms_teams_message(messages)
+    requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=3)
 
     return {'message': 'success'}
 
