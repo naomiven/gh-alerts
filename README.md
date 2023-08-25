@@ -4,7 +4,7 @@ _This App is a work in progress!_ Stay tuned :sparkles:
 
 Technology used:
 
-**Backend**: Python, Flask, AWS (SMS, SNS, EC2, Lambda, EventBridge)
+**Backend**: Python, Flask, AWS (SMS, SNS, EC2, Lambda, EventBridge), MS Teams Webhook
 
 **Frontend**: _TBD_
 
