@@ -12,7 +12,4 @@ venv
 !.elasticbeanstalk/*.global.yml
 
 # AWS Scripts
-config.json
-deployment-package.zip
-package
 policy.json

@@ -1,0 +1,12 @@
+# vs
+.vscode
+
+# python
+__pycache__
+.env
+venv
+
+# AWS Scripts
+config.json
+deployment-package.zip
+package
