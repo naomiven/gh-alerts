@@ -15,6 +15,7 @@ Technology used:
 Install dependencies
 
 ```python3
+cd backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -U pip
