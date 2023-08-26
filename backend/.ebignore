@@ -1,0 +1,2 @@
+# Ignore venv for deployment in subdirectory -> https://stackoverflow.com/questions/61805345/aws-elastic-beanstalk-chown-pythonpath-error
+venv
