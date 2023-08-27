@@ -92,3 +92,21 @@ Trigger the lambda at a scheduled rate using EventBridge Scheduler. To trigger e
 ```sh
 0 9-17 ? * MON-FRI *
 ```
+
+## Frontend
+
+Built with:
+
+```sh
+npm -v
+9.8.0
+node -v
+v20.5.1
+```
+
+### Test locally
+
+
+```sh
+npm start
+```
