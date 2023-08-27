@@ -6,7 +6,7 @@ Technology used:
 
 **Backend**: Python, Flask, AWS (SMS, SNS, EC2, Lambda, EventBridge), MS Teams Webhook
 
-**Frontend**: _TBD_
+**Frontend**: React.js, Material UI
 
 ## Backend
 
@@ -105,7 +105,6 @@ v20.5.1
 ```
 
 ### Test locally
-
 
 ```sh
 npm start
