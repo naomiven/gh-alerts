@@ -16,7 +16,9 @@ MOCK_DATA = {
     'username': 'test',
     'sns_subscriptions': [],
     'webhooks': [],
-    'receive_real_time_PR_alerts': True
+    'tracking_repos': [],
+    'receive_scheduled_alerts': False,
+    'receive_real_time_PR_alerts': False
 }
 
 _logger = logging.getLogger(__name__)
@@ -26,7 +28,7 @@ def _create_mock_table():
     """Create a mock table"""
     create_users_table(GH_ALERTS_USERS_TABLE_NAME, AWS_REGION)
     table = GHAlertsUsersTable(GH_ALERTS_USERS_TABLE_NAME, AWS_REGION)
-    # table.write_data(MOCK_DATA)
+    table.write_data(MOCK_DATA)
     return table
 
 
@@ -86,8 +88,36 @@ def test_create_user(
         receive_real_time_PR_alerts=receive_real_time_PR_alerts
     )
 
-    table.create_user(user_data)
+    response = table.create_user(user_data)
+    _logger.debug(response)
+
+    assert response['ResponseMetadata']['HTTPStatusCode'] == 200
+
     retrieve_response = table.get_user('naomiven')
     _logger.debug(f'retrieve_response: {retrieve_response}')
 
     assert retrieve_response == expected_user
+
+
+@mock_dynamodb
+@pytest.mark.parametrize(
+    'username, exists',
+    [
+        ('test', True),
+        ('i-do-not-exist', False)
+    ]
+)
+def test_get_user(username, exists):
+    """Test get user"""
+    table = _create_mock_table()
+
+    response = table.get_user(username)
+    _logger.debug(f'get_user response: {response}')
+
+    if exists:
+        assert all(field in response for field in [
+            'username', 'sns_subscriptions', 'webhooks', 'tracking_repos', \
+            'receive_scheduled_alerts', 'receive_real_time_PR_alerts'
+        ])
+    else:
+        assert not response

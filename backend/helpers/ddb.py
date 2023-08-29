@@ -55,3 +55,8 @@ class GHAlertsUsersTable:
         """Get user"""
         response = self.table.get_item(Key={'username': username})
         return response.get('Item')
+
+    def write_data(self, data):
+        """Add any data to table"""
+        with self.table.batch_writer() as batch:
+            batch.put_item(Item=data)
