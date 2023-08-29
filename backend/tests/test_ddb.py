@@ -3,13 +3,14 @@ Tests for GH Alerts Users class & methods
 """
 import logging
 import os
+from dotenv import load_dotenv
 from moto import mock_dynamodb
 import pytest
 from helpers.ddb import create_users_table, GHAlertsUsersTable, UserData
 
 
-
-APP_REGION = os.getenv('APP_REGION')
+load_dotenv()
+AWS_REGION = os.getenv('AWS_REGION')
 GH_ALERTS_USERS_TABLE_NAME = os.getenv('GH_ALERTS_USERS_TABLE_NAME')
 MOCK_DATA = {
     'username': 'test',
@@ -23,8 +24,8 @@ _logger = logging.getLogger(__name__)
 
 def _create_mock_table():
     """Create a mock table"""
-    create_users_table(GH_ALERTS_USERS_TABLE_NAME, APP_REGION)
-    table = GHAlertsUsersTable(GH_ALERTS_USERS_TABLE_NAME, APP_REGION)
+    create_users_table(GH_ALERTS_USERS_TABLE_NAME, AWS_REGION)
+    table = GHAlertsUsersTable(GH_ALERTS_USERS_TABLE_NAME, AWS_REGION)
     # table.write_data(MOCK_DATA)
     return table
 
@@ -37,8 +38,8 @@ def _create_mock_table():
         (
             'naomiven', [{'protocol': 'email', 'endpoint': 'hi@naomi.com'}, \
                 {'protocol': 'sms', 'endpoint': '12345678900'}], \
-                ['http://fake-ms-teams-webhook-url.com', 'http://fake-slack-webhook-url.com'], \
-                '*', True, True,
+                [{'name': 'ms_teams', 'url': 'http://fake-ms-teams-webhook-url.com'},
+                {'name': 'slack','url': 'http://fake-slack-webhook-url.com'}], '*', True, True,
             {
                 'username': 'naomiven',
                 'sns_subscriptions': [
@@ -52,7 +53,14 @@ def _create_mock_table():
                     }
                 ],
                 'webhooks': [
-                    'http://fake-ms-teams-webhook-url.com', 'http://fake-slack-webhook-url.com'
+                    {
+                        'name': 'ms_teams',
+                        'url': 'http://fake-ms-teams-webhook-url.com'
+                    },
+                    {
+                        'name': 'slack',
+                        'url': 'http://fake-slack-webhook-url.com'
+                    }
                 ],
                 'tracking_repos': '*',
                 'receive_scheduled_alerts': True,
@@ -61,18 +69,25 @@ def _create_mock_table():
         )
     ]
 )
+# pylint: disable=too-many-arguments
 def test_create_user(
-    user_email, sns_subscriptions, webhooks, tracking_repos, receive_scheduled_alerts, \
+    username, sns_subscriptions, webhooks, tracking_repos, receive_scheduled_alerts, \
     receive_real_time_PR_alerts, expected_user
 ):
     """Test create user to a mock table"""
     table = _create_mock_table()
 
-    # TODO this
-    user_data = UserData()
+    user_data = UserData(
+        username=username,
+        sns_subscriptions=sns_subscriptions,
+        webhooks=webhooks,
+        tracking_repos=tracking_repos,
+        receive_scheduled_alerts=receive_scheduled_alerts,
+        receive_real_time_PR_alerts=receive_real_time_PR_alerts
+    )
 
     table.create_user(user_data)
     retrieve_response = table.get_user('naomiven')
-    _logger.info(f'retrieve_response: {retrieve_response}')
+    _logger.debug(f'retrieve_response: {retrieve_response}')
 
     assert retrieve_response == expected_user

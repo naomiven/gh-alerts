@@ -5,9 +5,9 @@ from dataclasses import dataclass
 import boto3
 
 
-def create_users_table(table_name, app_region):
+def create_users_table(table_name, region_name):
     """Create GH Alerts Users table"""
-    dynamodb = boto3.resource('dynamodb', region_name=app_region)
+    dynamodb = boto3.resource('dynamodb', region_name=region_name)
     table = dynamodb.create_table(
         TableName = table_name,
         KeySchema = [
@@ -33,10 +33,10 @@ class UserData:
 
 class GHAlertsUsersTable:
     """GH Alerts Users Table"""
-    def __init__(self, table_name, app_region):
+    def __init__(self, table_name, region_name):
         self.table_name = table_name
-        self.app_region = app_region
-        self.table = boto3.resource('dynamodb', region_name=self.app_region).Table(self.table_name)
+        self.region_name = region_name
+        self.table = boto3.resource('dynamodb', region_name=self.region_name).Table(self.table_name)
 
     def create_user(self, user_data: UserData):
         """Create user"""
