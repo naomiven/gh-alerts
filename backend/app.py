@@ -8,19 +8,22 @@ import boto3
 from flask import Flask, request
 from github import Auth, Github
 import requests
+from helpers.ddb import GHAlertsUsersTable
 from helpers.formatters import format_email_message, format_ms_teams_message, format_sms_message
 
 
 AWS_REGION = os.getenv('AWS_REGION')
+GH_ALERTS_USERS_TABLE_NAME = os.getenv('GH_ALERTS_USERS_TABLE_NAME')
 GH_EMAIL_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_EMAIL_ALERTS_SNS_TOPIC_ARN')
 GH_SMS_ALERTS_SNS_TOPIC_ARN = os.getenv('GH_SMS_ALERTS_SNS_TOPIC_ARN')
 GH_TOKEN = os.getenv('GH_TOKEN')
 MS_TEAMS_INCOMING_WEBHOOK_URL = os.getenv('MS_TEAMS_INCOMING_WEBHOOK_URL')
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 auth = Auth.Token(GH_TOKEN)
 g = Github(auth=auth)
+table = GHAlertsUsersTable(GH_ALERTS_USERS_TABLE_NAME, AWS_REGION)
 
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
@@ -197,3 +200,13 @@ def unsubscribe():
         subscriber.unsubscribe_sms(phone_number)
 
     return {'message': 'success'}
+
+
+@app.route('/users/<username>')
+def get_users(username):
+    user = table.get_user(username)
+
+    if user:
+        return user
+
+    return {'message': 'User not found'}, 404

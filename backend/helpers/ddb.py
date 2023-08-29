@@ -27,8 +27,8 @@ class UserData:
     sns_subscriptions: list = None
     webhooks: list = None
     tracking_repos: list = None
-    receive_scheduled_alerts: bool = None
-    receive_real_time_PR_alerts: bool = None
+    scheduled_alerts: bool = None
+    live_pr_alerts: bool = None
 
 
 class GHAlertsUsersTable:
@@ -45,8 +45,8 @@ class GHAlertsUsersTable:
             'sns_subscriptions': user_data.sns_subscriptions,
             'webhooks': user_data.webhooks,
             'tracking_repos': user_data.tracking_repos,
-            'receive_scheduled_alerts': user_data.receive_scheduled_alerts,
-            'receive_real_time_PR_alerts': user_data.receive_real_time_PR_alerts
+            'scheduled_alerts': user_data.scheduled_alerts,
+            'live_pr_alerts': user_data.live_pr_alerts
         }
         response = self.table.put_item(Item=item)
         return response

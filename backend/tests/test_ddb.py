@@ -16,9 +16,9 @@ MOCK_DATA = {
     'username': 'test',
     'sns_subscriptions': [],
     'webhooks': [],
-    'tracking_repos': [],
-    'receive_scheduled_alerts': False,
-    'receive_real_time_PR_alerts': False
+    'tracking_repos': '*',
+    'scheduled_alerts': False,
+    'live_pr_alerts': False
 }
 
 _logger = logging.getLogger(__name__)
@@ -34,8 +34,8 @@ def _create_mock_table():
 
 @mock_dynamodb
 @pytest.mark.parametrize(
-    'username, sns_subscriptions, webhooks, tracking_repos, receive_scheduled_alerts, \
-        receive_real_time_PR_alerts, expected_user',
+    'username, sns_subscriptions, webhooks, tracking_repos, scheduled_alerts, \
+        live_pr_alerts, expected_user',
     [
         (
             'naomiven', [{'protocol': 'email', 'endpoint': 'hi@naomi.com'}, \
@@ -65,16 +65,16 @@ def _create_mock_table():
                     }
                 ],
                 'tracking_repos': '*',
-                'receive_scheduled_alerts': True,
-                'receive_real_time_PR_alerts': True
+                'scheduled_alerts': True,
+                'live_pr_alerts': True
             }
         )
     ]
 )
 # pylint: disable=too-many-arguments
 def test_create_user(
-    username, sns_subscriptions, webhooks, tracking_repos, receive_scheduled_alerts, \
-    receive_real_time_PR_alerts, expected_user
+    username, sns_subscriptions, webhooks, tracking_repos, scheduled_alerts, \
+    live_pr_alerts, expected_user
 ):
     """Test create user to a mock table"""
     table = _create_mock_table()
@@ -84,8 +84,8 @@ def test_create_user(
         sns_subscriptions=sns_subscriptions,
         webhooks=webhooks,
         tracking_repos=tracking_repos,
-        receive_scheduled_alerts=receive_scheduled_alerts,
-        receive_real_time_PR_alerts=receive_real_time_PR_alerts
+        scheduled_alerts=scheduled_alerts,
+        live_pr_alerts=live_pr_alerts
     )
 
     response = table.create_user(user_data)
@@ -117,7 +117,7 @@ def test_get_user(username, exists):
     if exists:
         assert all(field in response for field in [
             'username', 'sns_subscriptions', 'webhooks', 'tracking_repos', \
-            'receive_scheduled_alerts', 'receive_real_time_PR_alerts'
+            'scheduled_alerts', 'live_pr_alerts'
         ])
     else:
         assert not response
