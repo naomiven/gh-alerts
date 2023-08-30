@@ -4,17 +4,10 @@ import Button from '../BasicButton/BasicButton';
 
 const DestinationInput = (props) => {
   return (
-    <Box
-      component='form'
-      sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete='off'
-    >
-      <TextField id='outlined-basic' label={props.label} variant='outlined' />
+    <>
+      <TextField id='outlined-basic' variant='outlined' label={props.label} value={props.value}/>
       <Button label={props.buttonLabel}></Button>
-    </Box>
+    </>
   );
 };
 

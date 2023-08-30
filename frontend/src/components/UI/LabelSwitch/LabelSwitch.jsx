@@ -5,7 +5,7 @@ import Switch from '@mui/material/Switch';
 const LabelSwitch = (props) => {
   return (
     <FormGroup>
-      <FormControlLabel control={<Switch />} label={props.label} />
+      <FormControlLabel control={<Switch checked={props.value}/>} label={props.label}/>
     </FormGroup>
   );
 };

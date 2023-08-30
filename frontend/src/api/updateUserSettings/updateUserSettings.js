@@ -1,18 +1,17 @@
 const GH_ALERTS_API_ENDPOINT = process.env.REACT_APP_GH_ALERTS_API;
 
-const updateUserSettings = async (username) => {
+const updateUserSettings = async (values) => {
   const options = {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
-    // TODO: add user info in body
+    body: JSON.stringify(values)
   };
+
   const response = await fetch(
-    // `${GH_ALERTS_API_ENDPOINT}/users/${username}`,
-    `${GH_ALERTS_API_ENDPOINT}`
+    `${GH_ALERTS_API_ENDPOINT}/users/${values.username}`, options
   );
-  console.log(response.text);
   const json = await response.json();
 
   return { status: response.status, ...json };
