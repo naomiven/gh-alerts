@@ -6,6 +6,7 @@ import logging
 import os
 import boto3
 from flask import Flask, request
+from flask_cors import CORS
 from github import Auth, Github
 import requests
 from helpers.ddb import GHAlertsUsersTable
@@ -26,6 +27,8 @@ g = Github(auth=auth)
 table = GHAlertsUsersTable(GH_ALERTS_USERS_TABLE_NAME, AWS_REGION)
 
 app = Flask(__name__)
+# TODO add specific allowed origins
+CORS(app)
 app.logger.setLevel(logging.INFO)
 
 
@@ -210,3 +213,8 @@ def get_users(username):
         return user
 
     return {'message': 'User not found'}, 404
+
+
+@app.route('/users/<username>', methods=['PATCH'])
+def update_user(username):
+    return {'success': True}
