@@ -1,12 +1,15 @@
 import Box from '@mui/material/Box';
-import Button from '../UI/BasicButton/BasicButton';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import LabelSwitch from '../UI/LabelSwitch/LabelSwitch';
 import DestinationInput from '../UI/DestinationInput/DestinationInput';
+import updateUserSettings from '../../api/updateUserSettings';
 
 const Settings = (props) => {
+  const handleSave = () => {
+    updateUserSettings('test');
+  };
   return (
     <>
       <Container maxWidth='sm'>
@@ -24,7 +27,9 @@ const Settings = (props) => {
             label='Phone Number'
             buttonLabel='Subscribe'
           ></DestinationInput>
-          <Button label='Save'></Button>
+          <Button onClick={handleSave} variant={'contained'}>
+            Save
+          </Button>
         </Box>
       </Container>
     </>
