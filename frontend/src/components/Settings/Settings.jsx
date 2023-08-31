@@ -18,31 +18,13 @@ const Settings = (props) => {
     phoneNumber: '',
     trackingRepos: '*',
   });
+  const [isModified, setIsModified] = useState(false);
 
-  const scheduledAlertsChangeHandler = (event) => {
-    setValues((prevState) => ({
-      ...prevState,
-      ['scheduledAlerts']: event.target.checked,
-    }));
-  };
-
-  const livePRAlertsChangeHandler = (event) => {
-    setValues((prevState) => ({
-      ...prevState,
-      ['livePRAlerts']: event.target.checked,
-    }));
-  };
-
-  const emailChangeHandler = (event) => {
-    setValues((prevState) => ({ ...prevState, ['email']: event.target.value }));
-  };
-
-  const phoneNumberChangeHandler = (event) => {
-    setValues((prevState) => ({
-      ...prevState,
-      ['phoneNumber']: event.target.value,
-    }));
-  };
+  // Curried function - handle change for any input
+  const onChange = (input) => (event) => {
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    setValues({...values, [input]: value});
+  }
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -63,24 +45,24 @@ const Settings = (props) => {
             <LabelSwitch
               label='Receive scheduled notifications'
               value={values.scheduledAlerts}
-              onChange={scheduledAlertsChangeHandler}
+              onChange={onChange('scheduledAlerts')}
             ></LabelSwitch>
             <LabelSwitch
               label='Receive real-time Pull Requests'
               value={values.livePRAlerts}
-              onChange={livePRAlertsChangeHandler}
+              onChange={onChange('livePRAlerts')}
             ></LabelSwitch>
             <DestinationInput
               label='Email'
               buttonLabel='Subscribe'
               value={values.email}
-              onChange={emailChangeHandler}
+              onChange={onChange('email')}
             ></DestinationInput>
             <DestinationInput
               label='Phone Number'
               buttonLabel='Subscribe'
               value={values.phoneNumber}
-              onChange={phoneNumberChangeHandler}
+              onChange={onChange('phoneNumber')}
             ></DestinationInput>
             <Button type='submit' variant={'contained'} className='button'>
               Save
