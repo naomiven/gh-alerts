@@ -6,11 +6,12 @@ const updateUserSettings = async (values) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(values)
+    body: JSON.stringify(values),
   };
 
   const response = await fetch(
-    `${GH_ALERTS_API_ENDPOINT}/users/${values.username}`, options
+    `${GH_ALERTS_API_ENDPOINT}/users/${values.username}`,
+    options
   );
   const json = await response.json();
 
