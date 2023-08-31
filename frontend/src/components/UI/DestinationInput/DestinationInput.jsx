@@ -5,7 +5,7 @@ import Button from '../BasicButton/BasicButton';
 const DestinationInput = (props) => {
   return (
     <>
-      <TextField id='outlined-basic' variant='outlined' label={props.label} value={props.value}/>
+      <TextField id='outlined-basic' variant='outlined' label={props.label} value={props.value} onChange={props.onChange}/>
       <Button label={props.buttonLabel}></Button>
     </>
   );

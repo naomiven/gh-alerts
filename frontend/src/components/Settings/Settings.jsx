@@ -17,10 +17,29 @@ const Settings = (props) => {
     phoneNumber: ''
   });
 
+  const scheduledAlertsChangeHandler = (event) => {
+    const enabled = event.target.value === 'on' ? true : false;
+    setValues(prevState => ({...prevState, ['scheduledAlerts']: enabled}));
+  }
+
+  const livePRAlertsChangeHandler = (event) => {
+    const enabled = event.target.value === 'on' ? true : false;
+    setValues(prevState => ({...prevState, ['livePRAlerts']: enabled}));
+  }
+
+  const emailChangeHandler = (event) => {
+    setValues(prevState => ({...prevState, ['email']: event.target.value}));
+  }
+
+  const phoneNumberChangeHandler = (event) => {
+    setValues(prevState => ({...prevState, ['phoneNumber']: event.target.value}));
+  }
+
   const submitHandler = (event) => {
     event.preventDefault();
     updateUserSettings(values);
   };
+
   return (
     <>
       <Container maxWidth='sm'>
@@ -29,17 +48,19 @@ const Settings = (props) => {
         </Typography>
         <Box onSubmit={submitHandler} sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
           <form onSubmit={submitHandler}>
-            <LabelSwitch label='Receive scheduled notifications' value={values.scheduledAlerts}></LabelSwitch>
-            <LabelSwitch label='Receive real-time Pull Requests' value={values.livePRAlerts}></LabelSwitch>
+            <LabelSwitch label='Receive scheduled notifications' value={values.scheduledAlerts} onChange={scheduledAlertsChangeHandler}></LabelSwitch>
+            <LabelSwitch label='Receive real-time Pull Requests' value={values.livePRAlerts} onChange={livePRAlertsChangeHandler}></LabelSwitch>
             <DestinationInput
               label='Email'
               buttonLabel='Subscribe'
               value={values.email}
+              onChange={emailChangeHandler}
             ></DestinationInput>
             <DestinationInput
               label='Phone Number'
               buttonLabel='Subscribe'
               value={values.phoneNumber}
+              onChange={phoneNumberChangeHandler}
             ></DestinationInput>
             <Button type='submit' variant={'contained'}>
               Save
