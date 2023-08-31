@@ -6,7 +6,8 @@ import Typography from '@mui/material/Typography';
 import LabelSwitch from '../UI/LabelSwitch/LabelSwitch';
 import DestinationInput from '../UI/DestinationInput/DestinationInput';
 import updateUserSettings from '../../api/updateUserSettings/updateUserSettings';
-import React from 'react';
+import './Settings.css'
+
 
 const Settings = (props) => {
   // TODO: use get for initial state
@@ -45,7 +46,7 @@ const Settings = (props) => {
           Settings
         </Typography>
         <Box onSubmit={submitHandler} sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
-          <form onSubmit={submitHandler}>
+          <form onSubmit={submitHandler} className='form'>
             <LabelSwitch label='Receive scheduled notifications' value={values.scheduledAlerts} onChange={scheduledAlertsChangeHandler}></LabelSwitch>
             <LabelSwitch label='Receive real-time Pull Requests' value={values.livePRAlerts} onChange={livePRAlertsChangeHandler}></LabelSwitch>
             <DestinationInput
@@ -60,7 +61,7 @@ const Settings = (props) => {
               value={values.phoneNumber}
               onChange={phoneNumberChangeHandler}
             ></DestinationInput>
-            <Button type='submit' variant={'contained'}>
+            <Button type='submit' variant={'contained'} className='button'>
               Save
             </Button>
           </form>
