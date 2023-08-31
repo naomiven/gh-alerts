@@ -4,9 +4,9 @@ _This App is a work in progress!_ Stay tuned :sparkles:
 
 Technology used:
 
-**Backend**: Python, Flask, AWS (SMS, SNS, EC2, Lambda, EventBridge), MS Teams Webhook
+**Backend**: Python, Flask, AWS (SNS, EC2, Lambda, DynamoDB, EventBridge), MS Teams Webhook
 
-**Frontend**: React.js, Material UI
+**Frontend**: React.js, HTML, CSS
 
 ## Backend
 
@@ -85,7 +85,7 @@ The `deploy.sh` script executes the steps below in order:
 
 Ensure the timeout of the lambda is greater than the timeout of the post request to the MS Teams webhook.
 
-### EventBridge Scheduled Events
+### EventBridge Scheduler
 
 Trigger the lambda at a scheduled rate using EventBridge Scheduler. To trigger every hour from 9:00 - 17:00, Monday to Friday, use cron expression:
 
