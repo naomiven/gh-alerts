@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LabelSwitch from '../UI/LabelSwitch/LabelSwitch';
 import DestinationInput from '../UI/DestinationInput/DestinationInput';
-import updateUserSettings from '../../api/updateUserSettings/updateUserSettings';
+import updateUserSettings from '../../api/updateUserSettings';
 import './Settings.css';
 
 const Settings = (props) => {
@@ -18,12 +18,10 @@ const Settings = (props) => {
     phoneNumber: '',
     trackingRepos: '*',
   });
-  const [isModified, setIsModified] = useState(false);
-
   // Curried function - handle change for any input
   const onChange = (input) => (event) => {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    setValues({...values, [input]: value});
+    setValues(prevValues => ({...prevValues, [input]: value}));
   }
 
   const submitHandler = (event) => {
