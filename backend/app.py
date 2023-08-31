@@ -9,7 +9,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from github import Auth, Github
 import requests
-from helpers.ddb import GHAlertsUsersTable
+from helpers.ddb import GHAlertsUsersTable, UserData
 from helpers.formatters import format_email_message, format_ms_teams_message, format_sms_message
 
 
@@ -217,4 +217,24 @@ def get_users(username):
 
 @app.route('/users/<username>', methods=['PATCH'])
 def update_user(username):
-    return {'success': True}
+    sns_subscriptions = []
+
+    if request.json.get('email'):
+        sns_subscriptions.append({'protocol': 'email', 'endpoint': request.json.get('email')})
+
+    if request.json.get('phoneNumber'):
+        sns_subscriptions.append(
+            {'protocol': 'phone_number', 'endpoint': request.json.get('phoneNumber')}
+        )
+
+    user_data = UserData(
+        sns_subscriptions=sns_subscriptions,
+        webhooks=request.json.get('webhooks'),
+        tracking_repos=request.json.get('trackingRepos'),
+        scheduled_alerts=request.json.get('scheduledAlerts'),
+        live_pr_alerts=request.json.get('livePRAlerts')
+    )
+
+    table.update_user(username, user_data, True)
+
+    return {'message': 'success'}

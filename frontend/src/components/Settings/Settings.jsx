@@ -6,33 +6,43 @@ import Typography from '@mui/material/Typography';
 import LabelSwitch from '../UI/LabelSwitch/LabelSwitch';
 import DestinationInput from '../UI/DestinationInput/DestinationInput';
 import updateUserSettings from '../../api/updateUserSettings/updateUserSettings';
-import './Settings.css'
-
+import './Settings.css';
 
 const Settings = (props) => {
   // TODO: use get for initial state
   const [values, setValues] = useState({
+    username: 'naomiven', // TODO: use username in storage
     scheduledAlerts: false,
     livePRAlerts: false,
     email: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    trackingRepos: '*',
   });
 
   const scheduledAlertsChangeHandler = (event) => {
-    setValues(prevState => ({...prevState, ['scheduledAlerts']: event.target.checked}));
-  }
+    setValues((prevState) => ({
+      ...prevState,
+      ['scheduledAlerts']: event.target.checked,
+    }));
+  };
 
   const livePRAlertsChangeHandler = (event) => {
-    setValues(prevState => ({...prevState, ['livePRAlerts']: event.target.checked}));
-  }
+    setValues((prevState) => ({
+      ...prevState,
+      ['livePRAlerts']: event.target.checked,
+    }));
+  };
 
   const emailChangeHandler = (event) => {
-    setValues(prevState => ({...prevState, ['email']: event.target.value}));
-  }
+    setValues((prevState) => ({ ...prevState, ['email']: event.target.value }));
+  };
 
   const phoneNumberChangeHandler = (event) => {
-    setValues(prevState => ({...prevState, ['phoneNumber']: event.target.value}));
-  }
+    setValues((prevState) => ({
+      ...prevState,
+      ['phoneNumber']: event.target.value,
+    }));
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -45,10 +55,21 @@ const Settings = (props) => {
         <Typography variant='h4' style={{ marginBottom: '20px' }}>
           Settings
         </Typography>
-        <Box onSubmit={submitHandler} sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
+        <Box
+          onSubmit={submitHandler}
+          sx={{ bgcolor: '#cfe8fc', height: '100vh' }}
+        >
           <form onSubmit={submitHandler} className='form'>
-            <LabelSwitch label='Receive scheduled notifications' value={values.scheduledAlerts} onChange={scheduledAlertsChangeHandler}></LabelSwitch>
-            <LabelSwitch label='Receive real-time Pull Requests' value={values.livePRAlerts} onChange={livePRAlertsChangeHandler}></LabelSwitch>
+            <LabelSwitch
+              label='Receive scheduled notifications'
+              value={values.scheduledAlerts}
+              onChange={scheduledAlertsChangeHandler}
+            ></LabelSwitch>
+            <LabelSwitch
+              label='Receive real-time Pull Requests'
+              value={values.livePRAlerts}
+              onChange={livePRAlertsChangeHandler}
+            ></LabelSwitch>
             <DestinationInput
               label='Email'
               buttonLabel='Subscribe'
