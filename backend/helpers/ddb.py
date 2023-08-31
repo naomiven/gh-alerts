@@ -2,7 +2,11 @@
 DynamoDB helpers
 """
 from dataclasses import dataclass
+import logging
 import boto3
+
+
+_logger = logging.getLogger(__name__)
 
 
 def create_users_table(table_name, region_name):
@@ -30,6 +34,15 @@ class UserData:
     scheduled_alerts: bool = None
     live_pr_alerts: bool = None
 
+    def get_attr_dict(self):
+        """Converts attribute field-values into a dictionary"""
+        attrs = {}
+        for field in self.__dataclass_fields__:
+            value = getattr(self, field)
+            attrs[field] = value
+
+        return attrs
+
 
 class GHAlertsUsersTable:
     """GH Alerts Users Table"""
@@ -55,6 +68,26 @@ class GHAlertsUsersTable:
         """Get user"""
         response = self.table.get_item(Key={'username': username})
         return response.get('Item')
+
+    def update_user(self, username, user_data: UserData, allow_none):
+        """Update user field"""
+        update_exp_list = []
+        exp_attr_vals_dict = {}
+
+        for key, value in user_data.get_attr_dict().items():
+            if key == 'username' or (not allow_none and not value):
+                continue
+            update_exp_list.append(f'{key} = :{key}')
+            exp_attr_vals_dict[f':{key}'] = value
+
+        update_exp = f'SET {",".join(update_exp_list)}'
+
+        response = self.table.update_item(
+            Key={'username': username},
+            UpdateExpression=update_exp,
+            ExpressionAttributeValues=exp_attr_vals_dict
+        )
+        return response
 
     def write_data(self, data):
         """Add any data to table"""
