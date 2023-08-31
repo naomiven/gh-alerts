@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LabelSwitch from '../UI/LabelSwitch/LabelSwitch';
 import DestinationInput from '../UI/DestinationInput/DestinationInput';
+import getUserSettings from '../../api/getUserSettings';
 import updateUserSettings from '../../api/updateUserSettings';
 import './Settings.css';
 
 const Settings = (props) => {
-  // TODO: use get for initial state
   const [values, setValues] = useState({
     username: 'naomiven', // TODO: use username in storage
     scheduledAlerts: false,
@@ -18,10 +18,29 @@ const Settings = (props) => {
     phoneNumber: '',
     trackingRepos: '*',
   });
+
+  useEffect(() => {
+    const asyncGetUserSettings = async () => {
+      console.log('Getting user settings...');
+      const response = await getUserSettings(values.username);
+      console.log(response);
+
+      const newState = {
+        scheduledAlerts: response.scheduled_alerts,
+        livePRAlerts: response.live_pr_alerts,
+        email: '',  // TODO fill this
+        phoneNumber: '',
+        trackingRepos: response.tracking_repos
+      };
+      setValues(prevState => ({...prevState, ...newState}));
+    };
+    asyncGetUserSettings();
+  }, [])
+
   // Curried function - handle change for any input
   const onChange = (input) => (event) => {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    setValues(prevValues => ({...prevValues, [input]: value}));
+    setValues(prevState => ({...prevState, [input]: value}));
   }
 
   const submitHandler = (event) => {
