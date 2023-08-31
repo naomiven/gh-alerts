@@ -18,13 +18,11 @@ const Settings = (props) => {
   });
 
   const scheduledAlertsChangeHandler = (event) => {
-    const enabled = event.target.value === 'on' ? true : false;
-    setValues(prevState => ({...prevState, ['scheduledAlerts']: enabled}));
+    setValues(prevState => ({...prevState, ['scheduledAlerts']: event.target.checked}));
   }
 
   const livePRAlertsChangeHandler = (event) => {
-    const enabled = event.target.value === 'on' ? true : false;
-    setValues(prevState => ({...prevState, ['livePRAlerts']: enabled}));
+    setValues(prevState => ({...prevState, ['livePRAlerts']: event.target.checked}));
   }
 
   const emailChangeHandler = (event) => {
