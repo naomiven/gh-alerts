@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-import Button from '../BasicButton/BasicButton';
+import Button from '../UI/BasicButton/BasicButton';
 import './DestinationInput.css';
 
 const DestinationInput = (props) => {

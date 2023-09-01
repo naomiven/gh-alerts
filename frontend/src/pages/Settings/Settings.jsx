@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LabelSwitch from '../../components/UI/LabelSwitch/LabelSwitch';
-import DestinationInput from '../../components/UI/DestinationInput/DestinationInput';
+import DestinationInput from '../../components/DestinationInput/DestinationInput';
 import getUserSettings from '../../api/getUserSettings';
 import updateUserSettings from '../../api/updateUserSettings';
 import './Settings.css';
