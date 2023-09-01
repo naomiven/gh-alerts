@@ -28,20 +28,23 @@ const Settings = (props) => {
       const newState = {
         scheduledAlerts: response.scheduled_alerts,
         livePRAlerts: response.live_pr_alerts,
-        email: '',  // TODO fill this
+        email: '', // TODO fill this
         phoneNumber: '',
-        trackingRepos: response.tracking_repos
+        trackingRepos: response.tracking_repos,
       };
-      setValues(prevState => ({...prevState, ...newState}));
+      setValues((prevState) => ({ ...prevState, ...newState }));
     };
     asyncGetUserSettings();
-  }, [])
+  }, []);
 
   // Curried function - handle change for any input
   const onChange = (input) => (event) => {
-    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    setValues(prevState => ({...prevState, [input]: value}));
-  }
+    const value =
+      event.target.type === 'checkbox'
+        ? event.target.checked
+        : event.target.value;
+    setValues((prevState) => ({ ...prevState, [input]: value }));
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
