@@ -1,11 +1,18 @@
-import Settings from './components/Settings/Settings';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Settings from './pages/Settings/Settings';
 
 function App() {
   return (
-    <div className='App'>
-      Welcome to GH Alerts!
-      <Settings></Settings>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Settings />}>
+          <Route index element={<Settings />} />
+          <Route path='settings' element={<Settings />} />
+          {/* <Route path='*' element={<NoPage />} /> */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
