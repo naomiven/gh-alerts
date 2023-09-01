@@ -1,18 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
+import Home from './pages/Home/Home';
 import Settings from './pages/Settings/Settings';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Settings />}>
-          <Route index element={<Settings />} />
-          <Route path='settings' element={<Settings />} />
-          {/* <Route path='*' element={<NoPage />} /> */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route exact path='/' element={<Home />} />
+      <Route path='/settings' element={<Settings />} />
+      {/* <Route path='*' element={<NoPage />} /> */}
+    </Routes>
   );
 }
 
