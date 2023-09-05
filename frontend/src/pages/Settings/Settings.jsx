@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LabelSwitch from '../../components/UI/LabelSwitch/LabelSwitch';
-import DestinationInput from '../../components/DestinationInput/DestinationInput';
+import SubscriptionInput from '../../components/SubscriptionInput/SubscriptionInput';
 import getUserSettings from '../../api/getUserSettings';
 import updateUserSettings from '../../api/updateUserSettings';
 import './Settings.css';
@@ -61,6 +61,7 @@ const Settings = (props) => {
           sx={{ bgcolor: '#cfe8fc', height: '100vh' }}
         >
           <form onSubmit={submitHandler} className='form'>
+            <h2>Subscribe to Notifications</h2>
             <LabelSwitch
               label='Receive scheduled notifications'
               value={values.scheduledAlerts}
@@ -72,19 +73,20 @@ const Settings = (props) => {
               onChange={changeHandler('livePRAlerts')}
             ></LabelSwitch>
             Email
-            <DestinationInput
+            <SubscriptionInput
               label='Email'
               buttonLabel='Subscribe'
               value={values.email}
               onChange={changeHandler('email')}
-            ></DestinationInput>
+            ></SubscriptionInput>
             Phone Number
-            <DestinationInput
+            <SubscriptionInput
               label='Phone Number'
               buttonLabel='Subscribe'
               value={values.phoneNumber}
               onChange={changeHandler('phoneNumber')}
-            ></DestinationInput>
+            ></SubscriptionInput>
+            <h2>Register Webhooks</h2>
             <Button type='submit' variant={'contained'} className='button'>
               Save
             </Button>

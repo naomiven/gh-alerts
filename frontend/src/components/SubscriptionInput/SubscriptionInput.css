@@ -1,4 +1,8 @@
-.destinationInput {
+.stack {
+  gap: 10px;
+}
+
+.subscriptionInput {
   display: flex;
   align-items: center;
   gap: 10px;
