@@ -218,18 +218,25 @@ def get_users(username):
 @app.route('/users/<username>', methods=['PATCH'])
 def update_user(username):
     sns_subscriptions = []
+    webhooks = []
 
     if request.json.get('email'):
-        sns_subscriptions.append({'protocol': 'email', 'endpoint': request.json.get('email')})
+        sns_subscriptions.append({'protocol': 'email', 'endpoint': request.json['email']})
 
     if request.json.get('phoneNumber'):
         sns_subscriptions.append(
-            {'protocol': 'phone_number', 'endpoint': request.json.get('phoneNumber')}
+            {'protocol': 'phone_number', 'endpoint': request.json['phoneNumber']}
         )
+
+    if request.json.get('msTeamsWebhookURL'):
+        webhooks.append({'name': 'ms_teams', 'url': request.json['msTeamsWebhookURL']})
+
+    if request.json.get('slackWebhookURL'):
+        webhooks.append({'name': 'slack', 'url': request.json['slackWebhookURL']})
 
     user_data = UserData(
         sns_subscriptions=sns_subscriptions,
-        webhooks=request.json.get('webhooks'),
+        webhooks=webhooks,
         tracking_repos=request.json.get('trackingRepos'),
         scheduled_alerts=request.json.get('scheduledAlerts'),
         live_pr_alerts=request.json.get('livePRAlerts')

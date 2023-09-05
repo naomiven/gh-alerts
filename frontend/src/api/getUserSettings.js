@@ -3,8 +3,31 @@ const GH_ALERTS_API_ENDPOINT = process.env.REACT_APP_GH_ALERTS_API;
 const getUserSettings = async (username) => {
   const response = await fetch(`${GH_ALERTS_API_ENDPOINT}/users/${username}`);
   const json = await response.json();
+  console.log(json);
 
-  return { status: response.status, ...json };
+  const subs = json.sns_subscriptions;
+
+  let email = '',
+    phoneNumber = '';
+
+  if (subs) {
+    email = subs.find((item) => item.protocol === 'email')
+      ? subs.find((item) => item.protocol === 'email').endpoint
+      : '';
+    phoneNumber = subs.find((item) => item.protocol === 'phone_number')
+      ? subs.find((item) => item.protocol === 'phone_number').endpoint
+      : '';
+  }
+
+  const formatted = {
+    scheduledAlerts: json.scheduled_alerts,
+    livePRAlerts: json.live_pr_alerts,
+    email: email,
+    phoneNumber: phoneNumber,
+    trackingRepos: json.tracking_repos,
+  };
+
+  return { status: response.status, ...formatted };
 };
 
 export default getUserSettings;

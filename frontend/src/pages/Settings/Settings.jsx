@@ -23,13 +23,12 @@ const Settings = (props) => {
     const asyncGetUserSettings = async () => {
       console.log('Getting user settings...');
       const response = await getUserSettings(values.username);
-      console.log(response);
 
       const newState = {
-        scheduledAlerts: response.scheduled_alerts,
-        livePRAlerts: response.live_pr_alerts,
-        email: '', // TODO fill this
-        phoneNumber: '',
+        scheduledAlerts: response.scheduledAlerts,
+        livePRAlerts: response.livePRAlerts,
+        email: response.email,
+        phoneNumber: response.phoneNumber,
         trackingRepos: response.tracking_repos,
       };
       setValues((prevState) => ({ ...prevState, ...newState }));
@@ -38,7 +37,7 @@ const Settings = (props) => {
   }, []);
 
   // Curried function - handle change for any input
-  const onChange = (input) => (event) => {
+  const changeHandler = (input) => (event) => {
     const value =
       event.target.type === 'checkbox'
         ? event.target.checked
@@ -65,24 +64,26 @@ const Settings = (props) => {
             <LabelSwitch
               label='Receive scheduled notifications'
               value={values.scheduledAlerts}
-              onChange={onChange('scheduledAlerts')}
+              onChange={changeHandler('scheduledAlerts')}
             ></LabelSwitch>
             <LabelSwitch
               label='Receive real-time Pull Requests'
               value={values.livePRAlerts}
-              onChange={onChange('livePRAlerts')}
+              onChange={changeHandler('livePRAlerts')}
             ></LabelSwitch>
+            Email
             <DestinationInput
               label='Email'
               buttonLabel='Subscribe'
               value={values.email}
-              onChange={onChange('email')}
+              onChange={changeHandler('email')}
             ></DestinationInput>
+            Phone Number
             <DestinationInput
               label='Phone Number'
               buttonLabel='Subscribe'
               value={values.phoneNumber}
-              onChange={onChange('phoneNumber')}
+              onChange={changeHandler('phoneNumber')}
             ></DestinationInput>
             <Button type='submit' variant={'contained'} className='button'>
               Save
