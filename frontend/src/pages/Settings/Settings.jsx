@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LabelSwitch from '../../components/UI/LabelSwitch/LabelSwitch';
 import SubscriptionInput from '../../components/SubscriptionInput/SubscriptionInput';
+import WebhookInput from '../../components/WebhookInput/WebhookInput';
 import getUserSettings from '../../api/getUserSettings';
 import updateUserSettings from '../../api/updateUserSettings';
 import './Settings.css';
@@ -16,6 +17,8 @@ const Settings = (props) => {
     livePRAlerts: false,
     email: '',
     phoneNumber: '',
+    msTeamsWebhookURL: '',
+    slackWebhookURL: '',
     trackingRepos: '*',
   });
 
@@ -66,25 +69,35 @@ const Settings = (props) => {
               label='Receive scheduled notifications'
               value={values.scheduledAlerts}
               onChange={changeHandler('scheduledAlerts')}
-            ></LabelSwitch>
+            />
             <LabelSwitch
               label='Receive real-time Pull Requests'
               value={values.livePRAlerts}
               onChange={changeHandler('livePRAlerts')}
-            ></LabelSwitch>
+            />
             <SubscriptionInput
               label='Email'
               buttonLabel='Subscribe'
               value={values.email}
               onChange={changeHandler('email')}
-            ></SubscriptionInput>
+            />
             <SubscriptionInput
               label='Phone Number'
               buttonLabel='Subscribe'
               value={values.phoneNumber}
               onChange={changeHandler('phoneNumber')}
-            ></SubscriptionInput>
+            />
             <h2>Register Webhooks</h2>
+            <WebhookInput
+              label='MS Teams Webhook URL'
+              value={values.msTeamsWebhookURL}
+              onChange={changeHandler('msTeamsWebhookURL')}
+            />
+            <WebhookInput
+              label='Slack Webhook URL'
+              value={values.slackWebhookURL}
+              onChange={changeHandler('slackWebhookURL')}
+            />
             <Button type='submit' variant={'contained'} className='button'>
               Save
             </Button>
