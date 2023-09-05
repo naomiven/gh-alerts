@@ -29,7 +29,7 @@ const Settings = (props) => {
         livePRAlerts: response.livePRAlerts,
         email: response.email,
         phoneNumber: response.phoneNumber,
-        trackingRepos: response.tracking_repos,
+        trackingRepos: response.trackingRepos,
       };
       setValues((prevState) => ({ ...prevState, ...newState }));
     };
@@ -72,14 +72,12 @@ const Settings = (props) => {
               value={values.livePRAlerts}
               onChange={changeHandler('livePRAlerts')}
             ></LabelSwitch>
-            Email
             <SubscriptionInput
               label='Email'
               buttonLabel='Subscribe'
               value={values.email}
               onChange={changeHandler('email')}
             ></SubscriptionInput>
-            Phone Number
             <SubscriptionInput
               label='Phone Number'
               buttonLabel='Subscribe'

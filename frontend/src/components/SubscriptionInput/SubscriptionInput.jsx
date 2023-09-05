@@ -5,7 +5,7 @@ import './SubscriptionInput.css';
 const SubscriptionInput = (props) => {
   return (
     <div className='stack'>
-      {/* {props.label} */}
+      {props.label}
       <div className='subscriptionInput'>
         <TextField
           id='outlined-basic'
