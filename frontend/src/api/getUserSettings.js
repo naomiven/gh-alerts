@@ -6,9 +6,12 @@ const getUserSettings = async (username) => {
   console.log(json);
 
   const subs = json.sns_subscriptions;
+  const webhooks = json.webhooks;
 
   let email = '',
-    phoneNumber = '';
+    phoneNumber = '',
+    msTeamsWebhookURL = '',
+    slackWebhookURL = '';
 
   if (subs) {
     email = subs.find((item) => item.protocol === 'email')
@@ -19,11 +22,22 @@ const getUserSettings = async (username) => {
       : '';
   }
 
+  if (webhooks) {
+    msTeamsWebhookURL = webhooks.find((item) => item.name === 'ms_teams')
+    ? webhooks.find((item) => item.name === 'ms_teams').url
+    : '';
+    slackWebhookURL = webhooks.find((item) => item.name === 'slack')
+    ? webhooks.find((item) => item.name === 'slack').url
+    : '';
+  }
+
   const formatted = {
     scheduledAlerts: json.scheduled_alerts,
     livePRAlerts: json.live_pr_alerts,
     email: email,
     phoneNumber: phoneNumber,
+    msTeamsWebhookURL: msTeamsWebhookURL,
+    slackWebhookURL: slackWebhookURL,
     trackingRepos: json.tracking_repos,
   };
 

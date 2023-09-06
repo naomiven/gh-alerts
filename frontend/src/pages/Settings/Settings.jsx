@@ -32,6 +32,8 @@ const Settings = (props) => {
         livePRAlerts: response.livePRAlerts,
         email: response.email,
         phoneNumber: response.phoneNumber,
+        msTeamsWebhookURL: response.msTeamsWebhookURL,
+        slackWebhookURL: response.slackWebhookURL,
         trackingRepos: response.trackingRepos,
       };
       setValues((prevState) => ({ ...prevState, ...newState }));
