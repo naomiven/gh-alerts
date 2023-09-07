@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LabelSwitch from '../../components/UI/LabelSwitch/LabelSwitch';
+import Toast from '../../components/UI/Toast/Toast';
 import SubscriptionInput from '../../components/SubscriptionInput/SubscriptionInput';
 import WebhookInput from '../../components/WebhookInput/WebhookInput';
 import getUserSettings from '../../api/getUserSettings';
@@ -20,6 +21,12 @@ const Settings = (props) => {
     msTeamsWebhookURL: '',
     slackWebhookURL: '',
     trackingRepos: '*',
+  });
+
+  const [toast, setToast] = useState({
+    message: null,
+    severity: null,
+    open: false,
   });
 
   useEffect(() => {
@@ -52,12 +59,40 @@ const Settings = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    updateUserSettings(values);
+
+    const asyncUpdateUserSettings = async () => {
+      const response = await updateUserSettings(values);
+
+      if (response.status === 200) {
+        setToast(() => ({
+          message: 'Settings saved successfully!',
+          severity: 'success',
+          open: true,
+        }));
+      } else {
+        setToast(() => ({
+          message: 'Save failed!',
+          severity: 'error',
+          open: true,
+        }));
+      }
+    };
+    asyncUpdateUserSettings();
+  };
+
+  const closeToastHandler = (event) => {
+    setToast(() => ({ message: null, severity: null, open: false }));
   };
 
   return (
     <>
       <Container maxWidth='sm'>
+        <Toast
+          message={toast.message}
+          severity={toast.severity}
+          open={toast.open}
+          onClose={closeToastHandler}
+        />
         <Typography variant='h4' style={{ marginBottom: '20px' }}>
           Settings
         </Typography>
