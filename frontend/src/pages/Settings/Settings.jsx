@@ -7,6 +7,7 @@ import LabelSwitch from '../../components/UI/LabelSwitch/LabelSwitch';
 import Toast from '../../components/UI/Toast/Toast';
 import SubscriptionInput from '../../components/SubscriptionInput/SubscriptionInput';
 import WebhookInput from '../../components/WebhookInput/WebhookInput';
+import createSubscription from '../../api/createSubscription';
 import getUserSettings from '../../api/getUserSettings';
 import updateUserSettings from '../../api/updateUserSettings';
 import './Settings.css';
@@ -57,8 +58,33 @@ const Settings = (props) => {
     setValues((prevState) => ({ ...prevState, [input]: value }));
   };
 
-  const subscribeHandler = (event) => {
-    console.log('subscribe handler!!!');
+  // Need extra () because we don't want this to execute when calling subscribeHandler(...).
+  // We want it to return a function.
+  const subscribeHandler = (input) => () => {
+    const asyncCreateSubscription = async () => {
+      const response = await createSubscription({ [input]: values[input] });
+
+      if (response.status === 200) {
+        setToast(() => ({
+          message:
+            input === 'email'
+              ? 'Email subscribed successfully.' +
+                'Please check your email to confirm your subscription.'
+              : input === 'phoneNumber'
+              ? 'Phone number subscribed successfully!'
+              : null,
+          severity: 'success',
+          open: true,
+        }));
+      } else {
+        setToast(() => ({
+          message: 'Subscribe failed!',
+          severity: 'error',
+          open: true,
+        }));
+      }
+    };
+    asyncCreateSubscription();
   };
 
   const submitHandler = (event) => {
@@ -121,14 +147,14 @@ const Settings = (props) => {
               buttonLabel='Subscribe'
               value={values.email}
               onChange={changeHandler('email')}
-              onSubscribe={subscribeHandler}
+              onSubscribe={subscribeHandler('email')}
             />
             <SubscriptionInput
               label='Phone Number'
               buttonLabel='Subscribe'
               value={values.phoneNumber}
               onChange={changeHandler('phoneNumber')}
-              onSubscribe={subscribeHandler}
+              onSubscribe={subscribeHandler('phoneNumber')}
             />
             <h2>Register Webhooks</h2>
             <WebhookInput

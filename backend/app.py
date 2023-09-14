@@ -170,7 +170,7 @@ def publish_unread_notifications():
 @app.route('/subscriptions', methods=['POST'])
 def subscribe():
     email = request.json.get('email')
-    phone_number = request.json.get('phone_number')
+    phone_number = request.json.get('phoneNumber')
 
     if not email and not phone_number:
         return {'message': 'Email or phone number required for subscription'}, 400
