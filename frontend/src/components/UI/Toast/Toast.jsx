@@ -12,6 +12,7 @@ const Toast = (props) => {
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={props.open}
         autoHideDuration={3000}
         onClose={props.onClose}
