@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-import Button from '../UI/BasicButton/BasicButton';
+import Button from '@mui/material/Button';
 import './SubscriptionInput.css';
 
 const SubscriptionInput = (props) => {
@@ -14,7 +14,9 @@ const SubscriptionInput = (props) => {
           value={props.value}
           onChange={props.onChange}
         />
-        <Button label={props.buttonLabel}></Button>
+        <Button variant='contained' onClick={props.onSubscribe}>
+          {props.buttonLabel}
+        </Button>
       </div>
     </div>
   );

@@ -57,6 +57,10 @@ const Settings = (props) => {
     setValues((prevState) => ({ ...prevState, [input]: value }));
   };
 
+  const subscribeHandler = (event) => {
+    console.log('subscribe handler!!!');
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -117,12 +121,14 @@ const Settings = (props) => {
               buttonLabel='Subscribe'
               value={values.email}
               onChange={changeHandler('email')}
+              onSubscribe={subscribeHandler}
             />
             <SubscriptionInput
               label='Phone Number'
               buttonLabel='Subscribe'
               value={values.phoneNumber}
               onChange={changeHandler('phoneNumber')}
+              onSubscribe={subscribeHandler}
             />
             <h2>Register Webhooks</h2>
             <WebhookInput
