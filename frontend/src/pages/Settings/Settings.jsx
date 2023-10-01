@@ -123,8 +123,8 @@ const Settings = (props) => {
           open={toast.open}
           onClose={closeToastHandler}
         />
-        <Typography variant='h4' style={{ marginBottom: '20px' }}>
-          Settings
+        <Typography variant='h4'>
+          <div className='title-settings'>Settings</div>
         </Typography>
         <Box
           onSubmit={submitHandler}
