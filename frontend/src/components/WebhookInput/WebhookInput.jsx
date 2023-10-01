@@ -5,12 +5,13 @@ const WebhookInput = (props) => {
   return (
     <div className='stack'>
       {props.label}
-        <TextField
-            id='outlined-basic'
-            variant='outlined'
-            value={props.value}
-            onChange={props.onChange}
-        />
+      <TextField
+        className='textfield'
+        id='outlined-basic'
+        variant='outlined'
+        value={props.value}
+        onChange={props.onChange}
+      />
     </div>
   );
 };

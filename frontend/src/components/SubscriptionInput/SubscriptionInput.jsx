@@ -8,6 +8,7 @@ const SubscriptionInput = (props) => {
       {props.label}
       <div className='subscriptionInput'>
         <TextField
+          className='textfield'
           id='outlined-basic'
           variant='outlined'
           label={props.label}

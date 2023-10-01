@@ -128,7 +128,7 @@ const Settings = (props) => {
         </Typography>
         <Box
           onSubmit={submitHandler}
-          sx={{ bgcolor: '#cfe8fc', height: '100vh' }}
+          // sx={{ bgcolor: '#cfe8fc', height: '200vh' }}
         >
           <form onSubmit={submitHandler} className='form'>
             <h2>Subscribe to Notifications</h2>

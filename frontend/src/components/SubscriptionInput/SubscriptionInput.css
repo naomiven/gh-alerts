@@ -9,3 +9,7 @@
   align-items: center;
   gap: 10px;
 }
+
+.textfield {
+  width: 300px;
+}
