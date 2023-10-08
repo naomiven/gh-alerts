@@ -13,6 +13,15 @@
                 "${GH_EMAIL_ALERTS_SNS_TOPIC_ARN}",
                 "${GH_SMS_ALERTS_SNS_TOPIC_ARN}"
             ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:GetItem",
+                "dynamodb:UpdateItem"
+            ],
+            "Resource": "${GH_ALERTS_USERS_TABLE_ARN}"
         }
     ]
 }
