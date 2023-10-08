@@ -10,3 +10,4 @@ venv
 config.json
 deployment-package.zip
 package
+policy.json

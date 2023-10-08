@@ -1,0 +1,10 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "dynamodb:GetItem",
+            "Resource": "${GH_ALERTS_USERS_TABLE_ARN}"
+        }
+    ]
+}
