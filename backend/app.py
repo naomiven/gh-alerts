@@ -161,10 +161,11 @@ def publish_unread_notifications():
     response = publisher.publish_to_sms_topic('GH Alerts', message)
     app.logger.debug(f'Publish to SMS topic response: {response}')
 
-    if request.json.get('ms_teams_webhook_url'):
-        message = format_ms_teams_message(messages)
-        response = requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=5)
-        app.logger.debug(f'Publish to MS Teams Webhook response: {response.content}')
+    if request.json.get('ms_teams_webhook_urls'):
+        for url in request.json['ms_teams_webhook_urls']:
+            message = format_ms_teams_message(messages)
+            response = requests.post(url, json=message, timeout=5)
+            app.logger.debug(f'Publish to MS Teams Webhook response: {response.content}')
 
     return {'message': 'success'}
 
