@@ -1,0 +1,2 @@
+boto3
+-r requirements_deploy.txt

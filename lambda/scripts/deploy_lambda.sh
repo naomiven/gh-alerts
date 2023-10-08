@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REQUIREMENTS_FILE=requirements-deploy.txt
+REQUIREMENTS_FILE=requirements_deploy.txt
 
 FUNCTION_NAME=gh-alerts-publisher
 
