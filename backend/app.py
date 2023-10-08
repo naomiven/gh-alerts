@@ -149,20 +149,24 @@ def publish_unread_notifications():
             'message': 'No Github notifications!'
         }
 
-    message = format_email_message(messages)
-    response = publisher.publish_to_email_topic(
-        f'You have {len(messages)} unread Github notification{"s" if len(messages) > 1 else ""}',
-        message
-    )
-    app.logger.debug(f'Publish to email topic response: {response}')
+    if request.json.get('email'):
+        message = format_email_message(messages)
+        response = publisher.publish_to_email_topic(
+            f'You have {len(messages)} unread Github notification' + \
+            f'{"s" if len(messages) > 1 else ""}',
+            message
+        )
+        app.logger.debug(f'Publish to email topic response: {response}')
 
-    message = format_sms_message(messages)
-    response = publisher.publish_to_sms_topic('GH Alerts', message)
-    app.logger.debug(f'Publish to SMS topic response: {response}')
+    if request.json.get('phone_number'):
+        message = format_sms_message(messages)
+        response = publisher.publish_to_sms_topic('GH Alerts', message)
+        app.logger.debug(f'Publish to SMS topic response: {response}')
 
-    message = format_ms_teams_message(messages)
-    response = requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=5)
-    app.logger.debug(f'Publish to MS Teams Webhook response: {response.content}')
+    if request.json.get('ms_teams_webhook_url'):
+        message = format_ms_teams_message(messages)
+        response = requests.post(MS_TEAMS_INCOMING_WEBHOOK_URL, json=message, timeout=5)
+        app.logger.debug(f'Publish to MS Teams Webhook response: {response.content}')
 
     return {'message': 'success'}
 
