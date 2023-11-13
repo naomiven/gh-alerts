@@ -167,6 +167,8 @@ def publish_unread_notifications():
             response = requests.post(url, json=message, timeout=5)
             app.logger.debug(f'Publish to MS Teams Webhook response: {response.content}')
 
+    # TODO post slack webhook URL
+
     return {'message': 'success'}
 
 

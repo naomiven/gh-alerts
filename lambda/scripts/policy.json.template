@@ -3,7 +3,7 @@
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": "dynamodb:GetItem",
+            "Action": "dynamodb:Scan",
             "Resource": "${GH_ALERTS_USERS_TABLE_ARN}"
         }
     ]

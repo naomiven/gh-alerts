@@ -1,6 +1,7 @@
 {
     "environment_variables": {
         "GH_ALERTS_API_URL": "${GH_ALERTS_API_URL}",
-        "GH_ALERTS_USERS_TABLE_NAME": "${GH_ALERTS_USERS_TABLE_NAME}"
+        "GH_ALERTS_USERS_TABLE_NAME": "${GH_ALERTS_USERS_TABLE_NAME}",
+        "REGION_NAME": "${REGION_NAME}"
     }
 }
