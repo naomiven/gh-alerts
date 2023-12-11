@@ -19,6 +19,7 @@ const Drawer = () => {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          backgroundColor: 'background.drawer',
         },
       }} /*open={open}*/
     >

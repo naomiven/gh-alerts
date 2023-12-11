@@ -12,7 +12,11 @@ import { drawerWidth } from '../Sidebar/Drawer';
 const Header = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position='fixed' sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
+      <AppBar
+        position='fixed'
+        sx={{ width: `calc(100% - ${drawerWidth}px)` }}
+        color='appBar'
+      >
         <Toolbar>
           <IconButton
             size='large'
