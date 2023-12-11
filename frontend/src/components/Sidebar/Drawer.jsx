@@ -7,11 +7,21 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { drawerItems } from './DrawerItems';
 
-const drawerWidth = 240;
+export const drawerWidth = 200;
 
 const Drawer = () => {
   return (
-    <MuiDrawer variant='permanent' /*open={open}*/>
+    <MuiDrawer
+      variant='permanent'
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+        },
+      }} /*open={open}*/
+    >
       <Toolbar
         sx={{
           display: 'flex',

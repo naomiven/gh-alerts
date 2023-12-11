@@ -7,39 +7,33 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import Drawer from '../Sidebar/Drawer';
+import { drawerWidth } from '../Sidebar/Drawer';
 
 const Header = () => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Drawer />
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar
-          position='static'
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        >
-          <Toolbar>
-            <IconButton
-              size='large'
-              edge='start'
-              color='inherit'
-              aria-label='menu'
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-              <Link href='/' color='inherit' underline='none'>
-                Github Alerts
-              </Link>
-            </Typography>
-            <Link href='/settings' color='inherit'>
-              <Button color='inherit'>Settings</Button>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position='fixed' sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
+        <Toolbar>
+          <IconButton
+            size='large'
+            edge='start'
+            color='inherit'
+            aria-label='menu'
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+            <Link href='/' color='inherit' underline='none'>
+              Github Alerts
             </Link>
-            <Button color='inherit'>Login</Button>
-          </Toolbar>
-        </AppBar>
-      </Box>
+          </Typography>
+          <Link href='/settings' color='inherit'>
+            <Button color='inherit'>Settings</Button>
+          </Link>
+          <Button color='inherit'>Login</Button>
+        </Toolbar>
+      </AppBar>
     </Box>
   );
 };
