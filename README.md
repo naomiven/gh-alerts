@@ -6,7 +6,7 @@ Technology used:
 
 **Backend**: Python, Flask, AWS (SNS, EC2, Lambda, DynamoDB, EventBridge), MS Teams Webhook
 
-**Frontend**: React.js, HTML, CSS
+**Frontend**: React.js, Material UI, HTML, CSS
 
 ## Backend
 
@@ -95,7 +95,9 @@ Trigger the lambda at a scheduled rate using EventBridge Scheduler. To trigger e
 
 ## Frontend
 
-Built with:
+This app's color theme is inspired by [catpuccin](https://github.com/catppuccin/catppuccin).
+
+NPM and Node versions used:
 
 ```sh
 npm -v
