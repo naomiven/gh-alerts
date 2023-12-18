@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 
+import Drawer from './components/Sidebar/Drawer';
 import Header from './components/Header/Header';
 import Home from './pages/Home/Home';
 import Settings from './pages/Settings/Settings';
-import Drawer from './components/Sidebar/Drawer';
 
 function App() {
   return (
