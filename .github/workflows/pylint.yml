@@ -24,7 +24,7 @@ jobs:
           python -m pip install -r backend/requirements_test.txt
       - name: Linting code
         env:
-          APP_REGION: 'us-west-2'
+          AWS_REGION: 'us-west-2'
           GH_TOKEN: 'test-token'
         run: |
           source venv/bin/activate
