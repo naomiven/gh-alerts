@@ -95,8 +95,6 @@ Trigger the lambda at a scheduled rate using EventBridge Scheduler. To trigger e
 
 ## Frontend
 
-This app's color theme is inspired by [catpuccin](https://github.com/catppuccin/catppuccin).
-
 NPM and Node versions used:
 
 ```sh
@@ -111,3 +109,9 @@ v20.5.1
 ```sh
 npm start
 ```
+
+### Theme
+
+This app's color theme is inspired by [catpuccin](https://github.com/catppuccin/catppuccin).
+
+The background image for the sidebar drawer is AI-generated using ChatGPT's DALL-E.
