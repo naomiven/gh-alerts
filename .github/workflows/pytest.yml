@@ -10,6 +10,12 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+      - name: Load keys into ssh-agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: |
+            ${{ secrets.GH_ALERTS_USERS_TABLE_NAME }}
+
       # Setup Python (faster than using Python container)
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -25,6 +31,7 @@ jobs:
       - name: Run test suite
         env:
           AWS_REGION: 'us-west-2'
+          GH_ALERTS_USERS_TABLE_NAME: ${{ secrets.GH_ALERTS_USERS_TABLE_NAME }}
           GH_TOKEN: 'test-token'
         run: |
           source venv/bin/activate
