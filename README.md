@@ -135,9 +135,7 @@ Configure Amplify CLI with your AWS account and follow the instructions.
 amplify configure
 ```
 
-#### Deploy to Amplify
-
-Deploying for the first time
+#### Publish to Amplify
 
 ```bash
 # Build project to ensure it is ready for production
@@ -152,7 +150,7 @@ amplify publish
 
 #### Deploy using Amplify console
 
-Once Github repo is connected, the app can be built & deployed directly from AWS Amplify console.
+To set up automatic continuous deployment, hosting is added to the app connecting to this Github repo. Once connected, the app can be built & deployed directly from AWS Amplify console.
 
 Environment variables are manually added using the console.
 
