@@ -40,7 +40,7 @@ curl http://localhost:5000/
 #### Create a new applciation
 
 ```sh
-eb init -p python-3.9 gh-alerts --region <app-region>
+eb init -p python-3.9 gh-alerts --region <aws-region>
 
 # Configure a default keypair in order to connect to the EC2 instance that hosts your app
 eb init
@@ -61,20 +61,29 @@ In configuration settings, ensure that the EC2 instance profile points to the IA
 eb deploy
 ```
 
-### Deploy Lambda function
-
-```sh
-cd <root-dir>/lambda/scripts
-./deploy.sh
-```
-
-### Config
+#### Config
 
 To update the configuration of the backend:
 
 `set_envs.sh`: Sets the environment variables for the backend in Elastic Beanstalk.
 
 `update_policy.sh`: Updates the IAM policy (attached to IAM role) of the backend's EC2 instance profile. This policy contains permissions for accessing specific AWS resources.
+
+#### Test
+
+To test if the backend has been deployed properly:
+
+```bash
+$ curl http://gh-alerts.<domain>.<aws_region>.elasticbeanstalk.com
+> Welcome to Naomi's app :D
+```
+
+### Deploy Lambda function
+
+```sh
+cd <root-dir>/lambda/scripts
+./deploy.sh
+```
 
 ## Lambda Function
 
