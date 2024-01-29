@@ -78,6 +78,14 @@ $ curl http://gh-alerts.<domain>.<aws_region>.elasticbeanstalk.com
 > Welcome to Naomi's app :D
 ```
 
+#### Terminate Backend environment
+
+To avoid incurring charges to unused AWS resources, terminate the environment.
+
+```bash
+eb terminate
+```
+
 ### Deploy Lambda function
 
 ```sh
@@ -182,6 +190,12 @@ Since this React app uses client-side routing (with React Router), all server re
 Source address: </^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$)([^.]+$)/>
 Target address: /index.html
 Type: 200 (Rewrite)
+```
+
+#### Terminate Frontend environment
+
+```bash
+amplify delete
 ```
 
 ### Theme
