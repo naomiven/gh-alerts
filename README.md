@@ -6,7 +6,7 @@ Technology used:
 
 **Backend**: Python, Flask, AWS (SNS, EC2, Lambda, DynamoDB, EventBridge), MS Teams Webhook
 
-**Frontend**: React.js, HTML, CSS
+**Frontend**: React.js, Material UI, HTML, CSS
 
 ## Backend
 
@@ -40,7 +40,7 @@ curl http://localhost:5000/
 #### Create a new applciation
 
 ```sh
-eb init -p python-3.9 gh-alerts --region <app-region>
+eb init -p python-3.9 gh-alerts --region <aws-region>
 
 # Configure a default keypair in order to connect to the EC2 instance that hosts your app
 eb init
@@ -61,20 +61,29 @@ In configuration settings, ensure that the EC2 instance profile points to the IA
 eb deploy
 ```
 
-### Deploy Lambda function
-
-```sh
-cd <root-dir>/lambda/scripts
-./deploy.sh
-```
-
-### Config
+#### Config
 
 To update the configuration of the backend:
 
 `set_envs.sh`: Sets the environment variables for the backend in Elastic Beanstalk.
 
 `update_policy.sh`: Updates the IAM policy (attached to IAM role) of the backend's EC2 instance profile. This policy contains permissions for accessing specific AWS resources.
+
+#### Test
+
+To test if the backend has been deployed properly:
+
+```bash
+$ curl http://gh-alerts.<domain>.<aws_region>.elasticbeanstalk.com
+> Welcome to Naomi's app :D
+```
+
+### Deploy Lambda function
+
+```sh
+cd <root-dir>/lambda/scripts
+./deploy.sh
+```
 
 ## Lambda Function
 
@@ -95,7 +104,7 @@ Trigger the lambda at a scheduled rate using EventBridge Scheduler. To trigger e
 
 ## Frontend
 
-Built with:
+NPM and Node versions used:
 
 ```sh
 npm -v
@@ -109,3 +118,9 @@ v20.5.1
 ```sh
 npm start
 ```
+
+### Theme
+
+This app's color theme is inspired by [catpuccin](https://github.com/catppuccin/catppuccin).
+
+The background image for the sidebar drawer is AI-generated using ChatGPT's DALL-E.

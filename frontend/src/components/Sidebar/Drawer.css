@@ -1,0 +1,7 @@
+.drawer-background .MuiDrawer-paper {
+  background-image: linear-gradient(to bottom, #45475aff 0%, #ffffff00 100%),
+    url('/public/images/flying_penguins.png');
+  background-position: center top 300px;
+  background-repeat: no-repeat;
+  background-size: 250%;
+}

@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { drawerItems } from './DrawerItems';
+import './Drawer.css';
 
 export const drawerWidth = 200;
 
@@ -13,12 +14,14 @@ const Drawer = () => {
   return (
     <MuiDrawer
       variant='permanent'
+      className='drawer-background'
       sx={{
         width: drawerWidth,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          backgroundColor: 'background.drawer',
         },
       }} /*open={open}*/
     >
