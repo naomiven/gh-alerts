@@ -35,7 +35,7 @@ curl http://localhost:5000/
 > Welcome to Naomi's app :D
 ```
 
-### Deploy
+### Deploy the Backend
 
 #### Create a new applciation
 
@@ -71,7 +71,7 @@ To update the configuration of the backend:
 
 #### Test
 
-To test if the backend has been deployed properly:
+To test if the backend has been deployed properly
 
 ```bash
 $ curl http://gh-alerts.<domain>.<aws_region>.elasticbeanstalk.com
@@ -117,6 +117,36 @@ v20.5.1
 
 ```sh
 npm start
+```
+
+### Deploy the Frontend
+
+#### Prerequisites
+
+Install the AWS Amplify CLI
+
+```bash
+npm install -g @aws-amplify/cli
+```
+
+Configure Amplify CLI with your AWS account and follow the instructions.
+
+```bash
+amplify configure
+```
+
+#### Deploy to Amplify
+
+```bash
+
+# Build project to ensure it is ready for production
+npm run build
+
+# Initialize amplify and answer some questions about the project
+amplify init
+
+# Deploy
+amplify publish
 ```
 
 ### Theme
