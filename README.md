@@ -6,11 +6,11 @@ Technology used:
 
 **Backend**: Python, Flask, AWS (SNS, EC2, Lambda, DynamoDB, EventBridge), MS Teams Webhook
 
-**Frontend**: React.js, Material UI, HTML, CSS
+**Frontend**: React.js, Material UI, HTML, CSS, AWS Amplify
 
 ## Backend
 
-### Test locally
+### Test backend locally
 
 Install dependencies
 
@@ -113,7 +113,7 @@ node -v
 v20.5.1
 ```
 
-### Test locally
+### Test frontend locally
 
 ```sh
 npm start
@@ -137,8 +137,9 @@ amplify configure
 
 #### Deploy to Amplify
 
-```bash
+Deploying for the first time
 
+```bash
 # Build project to ensure it is ready for production
 npm run build
 
@@ -148,6 +149,32 @@ amplify init
 # Deploy
 amplify publish
 ```
+
+Once Github repo is connected, the app can be built & deployed directly from AWS Amplify console.
+
+Edit `amplify.yml` under "Build Settings" to add build commands:
+
+```yml
+version: 1
+frontend:
+  phases:
+    # IMPORTANT - Please verify your build commands
+    build:
+      commands:
+        # Root of project is in `frontend` subfolder
+        - cd frontend
+        - npm install
+        - npm run build
+  artifacts:
+    # IMPORTANT - Please verify your build output directory
+    baseDirectory: /
+    files:
+      - '**/*'
+  cache:
+    paths: []
+```
+
+Environment variables are manually added using the console.
 
 ### Theme
 
