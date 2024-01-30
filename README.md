@@ -175,6 +175,7 @@ frontend:
         - cd frontend
         - npm install
         - npm run build
+        - cp src/index.css build/ # temporary solution because index.css is not being added to build
   artifacts:
     # IMPORTANT - Please verify your build output directory
     baseDirectory: frontend/build # added
