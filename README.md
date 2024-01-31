@@ -37,7 +37,7 @@ curl http://localhost:5000/
 
 ### Deploy the Backend
 
-#### Create a new applciation
+#### Create a new application
 
 ```sh
 eb init -p python-3.9 gh-alerts --region <aws-region>
