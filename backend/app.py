@@ -27,8 +27,8 @@ g = Github(auth=auth)
 table = GHAlertsUsersTable(GH_ALERTS_USERS_TABLE_NAME, AWS_REGION)
 
 app = Flask(__name__)
-# TODO add specific allowed origins
-CORS(app)
+# TODO allow all origins for all routes for now, add specific allowed origins later
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.logger.setLevel(logging.INFO)
 
 

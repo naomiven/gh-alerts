@@ -78,6 +78,14 @@ $ curl http://gh-alerts.<domain>.<aws_region>.elasticbeanstalk.com
 > Welcome to Naomi's app :D
 ```
 
+#### Terminate Backend environment
+
+To avoid incurring charges to unused AWS resources, terminate the environment.
+
+```bash
+eb terminate
+```
+
 ### Deploy Lambda function
 
 ```sh
@@ -135,7 +143,7 @@ Configure Amplify CLI with your AWS account and follow the instructions.
 amplify configure
 ```
 
-#### Publish to Amplify
+#### Initialize Amplify environment
 
 ```bash
 # Build project to ensure it is ready for production
@@ -144,13 +152,13 @@ npm run build
 # Initialize amplify and answer some questions about the project
 amplify init
 
-# Deploy
-amplify publish
+# Add hosting to project & follow the instructions
+amplify add hosting
 ```
 
 #### Deploy using Amplify console
 
-To set up automatic continuous deployment, hosting is added to the app connecting to this Github repo. Once connected, the app can be built & deployed directly from AWS Amplify console.
+For automatic continuous deployment, hosting is added to the app. Once Github is connected, the app can be built & deployed directly from AWS Amplify console.
 
 Environment variables are manually added using the console.
 
@@ -167,6 +175,7 @@ frontend:
         - cd frontend
         - npm install
         - npm run build
+        - cp src/index.css build/ # temporary solution because index.css is not being added to build
   artifacts:
     # IMPORTANT - Please verify your build output directory
     baseDirectory: frontend/build # added
@@ -182,6 +191,12 @@ Since this React app uses client-side routing (with React Router), all server re
 Source address: </^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$)([^.]+$)/>
 Target address: /index.html
 Type: 200 (Rewrite)
+```
+
+#### Terminate Frontend environment
+
+```bash
+amplify delete
 ```
 
 ### Theme
