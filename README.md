@@ -69,7 +69,7 @@ To update the configuration of the backend:
 
 `update_policy.sh`: Updates the IAM policy (attached to IAM role) of the backend's EC2 instance profile. This policy contains permissions for accessing specific AWS resources.
 
-#### Configure HTTPS for Backend server environment
+#### Configure HTTPS
 
 To configure HTTPS, a server certificate must be assigned to the environment's load balancer.
 
@@ -77,10 +77,12 @@ To create and self-sign a certificate, upload it to IAM, and assign it to the lo
 
 ```sh
 cd scripts
-./gen_certs.sh  # TODO needs to be updated
+./gen_certs.sh
 ./upload_cert.sh
-./assign.sh
+./assign_cert.sh
 ```
+
+**NOTE** We are self-signing for development purposes only!
 
 #### Test
 
