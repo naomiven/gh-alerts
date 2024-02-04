@@ -37,7 +37,7 @@ curl http://localhost:5000/
 
 ### Deploy the Backend
 
-#### Create a new applciation
+#### Create a new application
 
 ```sh
 eb init -p python-3.9 gh-alerts --region <aws-region>
@@ -68,6 +68,21 @@ To update the configuration of the backend:
 `set_envs.sh`: Sets the environment variables for the backend in Elastic Beanstalk.
 
 `update_policy.sh`: Updates the IAM policy (attached to IAM role) of the backend's EC2 instance profile. This policy contains permissions for accessing specific AWS resources.
+
+#### Configure HTTPS
+
+To configure HTTPS, a server certificate must be assigned to the environment's load balancer.
+
+To create and self-sign a certificate, upload it to IAM, and assign it to the load balancer, run:
+
+```sh
+cd scripts
+./gen_certs.sh
+./upload_cert.sh
+./assign_cert.sh
+```
+
+**NOTE** We are self-signing for development purposes only!
 
 #### Test
 
