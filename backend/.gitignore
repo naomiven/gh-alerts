@@ -13,3 +13,9 @@ venv
 
 # AWS Scripts
 policy.json
+securelistener-alb.config
+
+# Certs
+*.key
+*.crt
+*.pem

@@ -1,12 +1,34 @@
 # Github Alerts
 
-_This App is a work in progress!_ Stay tuned :sparkles:
+:rocket: Turbocharge your Github workflow with Github Alerts!
 
-Technology used:
+:star2: Never miss a beat with instant PR reviews and notifications right to your email, phone, or Microsoft Teams app!
 
-**Backend**: Python, Flask, AWS (SNS, EC2, Lambda, DynamoDB, EventBridge), MS Teams Webhook
+:cloud: Seamlessly built in the Cloud, this app leverages the power of event-driven architecture to ensure you're always on top of your game!
+
+:tada: Stay ahead, stay updated, and skyrocket your productivity today!
+
+Thank you for stopping by! :)
+
+## Technology Used
+
+**Backend**: Python, Flask, AWS (SNS, Elastic Beanstalk, Lambda, DynamoDB, EventBridge), MS Teams Webhook
 
 **Frontend**: React.js, Material UI, HTML, CSS, AWS Amplify
+
+## Screenshots
+
+Configuring alert settings in the application
+
+![Settings Page](images/settings.png)
+
+Microsoft Teams notifications
+
+![MS Teams](images/ms_teams.png)
+
+SMS text notifications
+
+![SMS](images/sms.png)
 
 ## Backend
 
@@ -37,7 +59,7 @@ curl http://localhost:5000/
 
 ### Deploy the Backend
 
-#### Create a new applciation
+#### Create a new application
 
 ```sh
 eb init -p python-3.9 gh-alerts --region <aws-region>
@@ -68,6 +90,21 @@ To update the configuration of the backend:
 `set_envs.sh`: Sets the environment variables for the backend in Elastic Beanstalk.
 
 `update_policy.sh`: Updates the IAM policy (attached to IAM role) of the backend's EC2 instance profile. This policy contains permissions for accessing specific AWS resources.
+
+#### Configure HTTPS
+
+To configure HTTPS, a server certificate must be assigned to the environment's load balancer.
+
+To create and self-sign a certificate, upload it to IAM, and assign it to the load balancer, run:
+
+```sh
+cd scripts
+./gen_certs.sh
+./upload_cert.sh
+./assign_cert.sh
+```
+
+**NOTE** We are self-signing for development purposes only!
 
 #### Test
 
