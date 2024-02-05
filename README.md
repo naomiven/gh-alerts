@@ -1,12 +1,34 @@
 # Github Alerts
 
-_This App is a work in progress!_ Stay tuned :sparkles:
+:rocket: Turbocharge your Github workflow with Github Alerts!
 
-Technology used:
+:star2: Never miss a beat with instant PR reviews and notifications right to your email, phone, or Microsoft Teams app!
 
-**Backend**: Python, Flask, AWS (SNS, EC2, Lambda, DynamoDB, EventBridge), MS Teams Webhook
+:cloud: Seamlessly built in the Cloud, this app leverages the power of Event-Driven architecture to ensure you're always on top of your game!
+
+:tada: Stay ahead, stay updated, and skyrocket your productivity today!
+
+Thank you for stopping by! :)
+
+## Technology Used
+
+**Backend**: Python, Flask, AWS (SNS, Elastic Beanstalk, Lambda, DynamoDB, EventBridge), MS Teams Webhook
 
 **Frontend**: React.js, Material UI, HTML, CSS, AWS Amplify
+
+## Screenshots
+
+Configuring alert settings in the application
+
+![Settings Page](images/settings.png)
+
+Microsoft Teams notifications
+
+![MS Teams](images/ms_teams.png)
+
+SMS text notifications
+
+![SMS](images/sms.png)
 
 ## Backend
 
