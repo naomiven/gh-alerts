@@ -5,7 +5,6 @@ import './SubscriptionInput.css';
 const SubscriptionInput = (props) => {
   return (
     <div className='stack'>
-      {props.label}
       <div className='subscriptionInput'>
         <TextField
           className='textfield'
