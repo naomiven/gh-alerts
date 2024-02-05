@@ -4,7 +4,7 @@
 
 :star2: Never miss a beat with instant PR reviews and notifications right to your email, phone, or Microsoft Teams app!
 
-:cloud: Seamlessly built in the Cloud, this app leverages the power of Event-Driven architecture to ensure you're always on top of your game!
+:cloud: Seamlessly built in the Cloud, this app leverages the power of event-driven architecture to ensure you're always on top of your game!
 
 :tada: Stay ahead, stay updated, and skyrocket your productivity today!
 
